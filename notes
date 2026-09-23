@@ -1,0 +1,15 @@
+--- task_01
+
+a coluna adicional do historic_events.csv é ignorada quando o csv é usado como input
+
+a coluna indicator_name do wdi_indicators.csv é normalizada e ficam todos os valores sem aspas
+
+meti a opção de "Truncate table" em cada um dos table outputs para não dar erros ao correr múltiplas vezes (podemos sempre remover a opção)
+
+temos que meter uma descrição para cada coluna (à exceção de year e value) ?
+
+--- task_02
+
+damos sort antes de fazer output para o csv ? se sim, com que critério ?
+
+fazer load do mapping na staging database significa meter os valores numa tabela (criada na task_01 ?) ? ou adicionar a coluna group a cada tabela ? na dúvida optei pela 1a opção

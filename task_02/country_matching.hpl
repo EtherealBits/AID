@@ -1,0 +1,598 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pipeline>
+  <info>
+    <name>country_matching</name>
+    <name_sync_with_filename>Y</name_sync_with_filename>
+    <description/>
+    <extended_description/>
+    <pipeline_version/>
+    <pipeline_type>Normal</pipeline_type>
+    <parameters>
+    </parameters>
+    <capture_transform_performance>N</capture_transform_performance>
+    <transform_performance_capturing_delay>1000</transform_performance_capturing_delay>
+    <transform_performance_capturing_size_limit>100</transform_performance_capturing_size_limit>
+    <created_user>-</created_user>
+    <created_date>2026/09/23 15:01:14.996</created_date>
+    <modified_user>-</modified_user>
+    <modified_date>2026/09/23 15:01:14.996</modified_date>
+  </info>
+  <notepads>
+  </notepads>
+  <order>
+    <hop>
+      <from>HISTORICAL_EVENTS input</from>
+      <to>Union</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>MADDISON_INDICATORS input</from>
+      <to>Union</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>WDI_INDICATORS input</from>
+      <to>Union</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>Union</from>
+      <to>Add group column</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>Add group column</from>
+      <to>Switch / case</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>Switch / case</from>
+      <to>Focus</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>Switch / case</from>
+      <to>Western Europe</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>Switch / case</from>
+      <to>Central/Eastern Europe</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>Switch / case</from>
+      <to>Post-Soviet</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>Switch / case</from>
+      <to>Benchmark</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>Focus</from>
+      <to>Union 2</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>Western Europe</from>
+      <to>Union 2</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>Central/Eastern Europe</from>
+      <to>Union 2</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>Benchmark</from>
+      <to>Union 2</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>Post-Soviet</from>
+      <to>Union 2</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>Union 2</from>
+      <to>country_mapping.csv output</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>Union 2</from>
+      <to>COUNTRY_MAPPING output</to>
+      <enabled>Y</enabled>
+    </hop>
+  </order>
+  <transform>
+    <name>HISTORICAL_EVENTS input</name>
+    <type>TableInput</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <connection>Staging</connection>
+    <execute_each_row>N</execute_each_row>
+    <limit>0</limit>
+    <sql>SELECT
+  DISTINCT iso3,
+  country_name
+FROM stagingDB.HISTORICAL_EVENTS
+</sql>
+    <variables_active>N</variables_active>
+    <attributes/>
+    <GUI>
+      <xloc>271</xloc>
+      <yloc>230</yloc>
+    </GUI>
+  </transform>
+  <transform>
+    <name>MADDISON_INDICATORS input</name>
+    <type>TableInput</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <connection>Staging</connection>
+    <execute_each_row>N</execute_each_row>
+    <limit>0</limit>
+    <sql>SELECT
+  DISTINCT iso3,
+  country_name
+FROM stagingDB.MADDISON_INDICATORS
+</sql>
+    <variables_active>N</variables_active>
+    <attributes/>
+    <GUI>
+      <xloc>267</xloc>
+      <yloc>322</yloc>
+    </GUI>
+  </transform>
+  <transform>
+    <name>WDI_INDICATORS input</name>
+    <type>TableInput</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <connection>Staging</connection>
+    <execute_each_row>N</execute_each_row>
+    <limit>0</limit>
+    <sql>SELECT
+  DISTINCT iso3,
+  country_name
+FROM stagingDB.WDI_INDICATORS
+</sql>
+    <variables_active>N</variables_active>
+    <attributes/>
+    <GUI>
+      <xloc>267</xloc>
+      <yloc>406</yloc>
+    </GUI>
+  </transform>
+  <transform>
+    <name>Union</name>
+    <type>UniqueRowsByHashSet</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <store_values>Y</store_values>
+    <reject_duplicate_row>N</reject_duplicate_row>
+    <error_description/>
+    <fields>      </fields>
+    <attributes/>
+    <GUI>
+      <xloc>495</xloc>
+      <yloc>324</yloc>
+    </GUI>
+  </transform>
+  <transform>
+    <name>Switch / case</name>
+    <type>SwitchCase</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <case_value_decimal/>
+    <case_value_format/>
+    <case_value_group/>
+    <case_value_type/>
+    <cases>
+      <case>
+        <target_transform>Focus</target_transform>
+        <value>Portugal</value>
+      </case>
+      <case>
+        <target_transform>Western Europe</target_transform>
+        <value>Spain</value>
+      </case>
+      <case>
+        <target_transform>Western Europe</target_transform>
+        <value>France</value>
+      </case>
+      <case>
+        <target_transform>Western Europe</target_transform>
+        <value>Germany</value>
+      </case>
+      <case>
+        <target_transform>Western Europe</target_transform>
+        <value>Belgium</value>
+      </case>
+      <case>
+        <target_transform>Western Europe</target_transform>
+        <value>Italy</value>
+      </case>
+      <case>
+        <target_transform>Western Europe</target_transform>
+        <value>Ireland</value>
+      </case>
+      <case>
+        <target_transform>Western Europe</target_transform>
+        <value>Greece</value>
+      </case>
+      <case>
+        <target_transform>Central/Eastern Europe</target_transform>
+        <value>Poland</value>
+      </case>
+      <case>
+        <target_transform>Central/Eastern Europe</target_transform>
+        <value>Czechia</value>
+      </case>
+      <case>
+        <target_transform>Central/Eastern Europe</target_transform>
+        <value>Hungary</value>
+      </case>
+      <case>
+        <target_transform>Central/Eastern Europe</target_transform>
+        <value>Romania</value>
+      </case>
+      <case>
+        <target_transform>Post-Soviet</target_transform>
+        <value>Estonia</value>
+      </case>
+      <case>
+        <target_transform>Post-Soviet</target_transform>
+        <value>Latvia</value>
+      </case>
+      <case>
+        <target_transform>Post-Soviet</target_transform>
+        <value>Lithuania</value>
+      </case>
+      <case>
+        <target_transform>Benchmark</target_transform>
+        <value>European Union</value>
+      </case>
+    </cases>
+    <default_target_transform/>
+    <fieldname>country_name</fieldname>
+    <use_contains>N</use_contains>
+    <attributes/>
+    <GUI>
+      <xloc>738</xloc>
+      <yloc>322</yloc>
+    </GUI>
+  </transform>
+  <transform>
+    <name>Add group column</name>
+    <type>FieldSplitter</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <delimiter>,</delimiter>
+    <enclosure/>
+    <escape_string/>
+    <fields>
+      <field>
+        <currency/>
+        <decimal/>
+        <format/>
+        <group/>
+        <id/>
+        <idrem>N</idrem>
+        <ifnull/>
+        <length>-1</length>
+        <name>country_name</name>
+        <nullif/>
+        <precision>-1</precision>
+        <trimtype>none</trimtype>
+        <type>String</type>
+      </field>
+      <field>
+        <currency/>
+        <decimal/>
+        <format/>
+        <group/>
+        <id/>
+        <idrem>N</idrem>
+        <ifnull/>
+        <length>-1</length>
+        <name>country_group</name>
+        <nullif/>
+        <precision>-1</precision>
+        <trimtype>none</trimtype>
+        <type>String</type>
+      </field>
+    </fields>
+    <splitfield>country_name</splitfield>
+    <attributes/>
+    <GUI>
+      <xloc>613</xloc>
+      <yloc>323</yloc>
+    </GUI>
+  </transform>
+  <transform>
+    <name>Focus</name>
+    <type>SetValueConstant</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <usevar>N</usevar>
+    <fields>
+      <field>
+        <name>country_group</name>
+        <value>Focus</value>
+        <mask/>
+        <set_empty_string>N</set_empty_string>
+      </field>
+    </fields>
+    <attributes/>
+    <GUI>
+      <xloc>738</xloc>
+      <yloc>201</yloc>
+    </GUI>
+  </transform>
+  <transform>
+    <name>Union 2</name>
+    <type>UniqueRowsByHashSet</type>
+    <description/>
+    <distribute>N</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <store_values>Y</store_values>
+    <reject_duplicate_row>N</reject_duplicate_row>
+    <error_description/>
+    <fields>      </fields>
+    <attributes/>
+    <GUI>
+      <xloc>1083</xloc>
+      <yloc>320</yloc>
+    </GUI>
+  </transform>
+  <transform>
+    <name>Western Europe</name>
+    <type>SetValueConstant</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <usevar>N</usevar>
+    <fields>
+      <field>
+        <name>country_group</name>
+        <value>Western Europe</value>
+        <mask/>
+        <set_empty_string>N</set_empty_string>
+      </field>
+    </fields>
+    <attributes/>
+    <GUI>
+      <xloc>852</xloc>
+      <yloc>226</yloc>
+    </GUI>
+  </transform>
+  <transform>
+    <name>Central/Eastern Europe</name>
+    <type>SetValueConstant</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <usevar>N</usevar>
+    <fields>
+      <field>
+        <name>country_group</name>
+        <value>Central/Eastern Europe</value>
+        <mask/>
+        <set_empty_string>N</set_empty_string>
+      </field>
+    </fields>
+    <attributes/>
+    <GUI>
+      <xloc>893</xloc>
+      <yloc>323</yloc>
+    </GUI>
+  </transform>
+  <transform>
+    <name>Post-Soviet</name>
+    <type>SetValueConstant</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <usevar>N</usevar>
+    <fields>
+      <field>
+        <name>country_group</name>
+        <value>Post-Soviet</value>
+        <mask/>
+        <set_empty_string>N</set_empty_string>
+      </field>
+    </fields>
+    <attributes/>
+    <GUI>
+      <xloc>867</xloc>
+      <yloc>453</yloc>
+    </GUI>
+  </transform>
+  <transform>
+    <name>Benchmark</name>
+    <type>SetValueConstant</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <usevar>N</usevar>
+    <fields>
+      <field>
+        <name>country_group</name>
+        <value>Benchmark</value>
+        <mask/>
+        <set_empty_string>N</set_empty_string>
+      </field>
+    </fields>
+    <attributes/>
+    <GUI>
+      <xloc>734</xloc>
+      <yloc>454</yloc>
+    </GUI>
+  </transform>
+  <transform>
+    <name>country_mapping.csv output</name>
+    <type>TextFileOutput</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <schema_definition/>
+    <ignore_fields>N</ignore_fields>
+    <separator>,</separator>
+    <enclosure>"</enclosure>
+    <enclosure_forced>N</enclosure_forced>
+    <enclosure_fix_disabled>N</enclosure_fix_disabled>
+    <header>Y</header>
+    <footer>N</footer>
+    <format>UNIX</format>
+    <compression>None</compression>
+    <encoding>US-ASCII</encoding>
+    <endedLine/>
+    <fileNameInField>N</fileNameInField>
+    <fileNameField/>
+    <create_parent_folder>N</create_parent_folder>
+    <file>
+      <name>${PROJECT_HOME}/task_02/country_mapping.csv</name>
+      <servlet_output>N</servlet_output>
+      <do_not_open_new_file_init>Y</do_not_open_new_file_init>
+      <extention/>
+      <append>N</append>
+      <split>N</split>
+      <haspartno>N</haspartno>
+      <add_date>N</add_date>
+      <add_time>N</add_time>
+      <SpecifyFormat>N</SpecifyFormat>
+      <date_time_format/>
+      <add_to_result_filenames>Y</add_to_result_filenames>
+      <pad>N</pad>
+      <fast_dump>N</fast_dump>
+      <splitevery/>
+    </file>
+    <fields>
+    </fields>
+    <attributes/>
+    <GUI>
+      <xloc>1239</xloc>
+      <yloc>320</yloc>
+    </GUI>
+  </transform>
+  <transform>
+    <name>COUNTRY_MAPPING output</name>
+    <type>TableOutput</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <add_columns>N</add_columns>
+    <always_drop_and_recreate>N</always_drop_and_recreate>
+    <auto_update_table_structure>N</auto_update_table_structure>
+    <change_column_types>N</change_column_types>
+    <commit>1000</commit>
+    <connection>Staging</connection>
+    <drop_columns>N</drop_columns>
+    <fields>
+</fields>
+    <ignore_errors>N</ignore_errors>
+    <only_when_have_rows>N</only_when_have_rows>
+    <partitioning_daily>N</partitioning_daily>
+    <partitioning_enabled>N</partitioning_enabled>
+    <partitioning_field/>
+    <partitioning_monthly>Y</partitioning_monthly>
+    <return_field/>
+    <return_keys>N</return_keys>
+    <schema>stagingDB</schema>
+    <specify_fields>N</specify_fields>
+    <table>COUNTRY_MAPPING</table>
+    <tablename_field/>
+    <tablename_in_field>N</tablename_in_field>
+    <tablename_in_table>Y</tablename_in_table>
+    <truncate>Y</truncate>
+    <use_batch>Y</use_batch>
+    <attributes/>
+    <GUI>
+      <xloc>1083</xloc>
+      <yloc>463</yloc>
+    </GUI>
+  </transform>
+  <transform_error_handling>
+  </transform_error_handling>
+  <attributes/>
+</pipeline>
