@@ -13,46 +13,41 @@
     <transform_performance_capturing_delay>1000</transform_performance_capturing_delay>
     <transform_performance_capturing_size_limit>100</transform_performance_capturing_size_limit>
     <created_user>-</created_user>
-    <created_date>2026/09/23 15:01:14.996</created_date>
+    <created_date>2026/09/29 18:39:43.626</created_date>
     <modified_user>-</modified_user>
-    <modified_date>2026/09/23 15:01:14.996</modified_date>
+    <modified_date>2026/09/29 18:39:43.626</modified_date>
   </info>
   <notepads>
   </notepads>
   <order>
-    <hop>
-      <from>HISTORICAL_EVENTS input</from>
-      <to>Union</to>
-      <enabled>Y</enabled>
-    </hop>
-    <hop>
-      <from>MADDISON_INDICATORS input</from>
-      <to>Union</to>
-      <enabled>Y</enabled>
-    </hop>
-    <hop>
-      <from>WDI_INDICATORS input</from>
-      <to>Union</to>
-      <enabled>Y</enabled>
-    </hop>
-    <hop>
-      <from>Union</from>
-      <to>Add group column</to>
-      <enabled>Y</enabled>
-    </hop>
     <hop>
       <from>Add group column</from>
       <to>Switch / case</to>
       <enabled>Y</enabled>
     </hop>
     <hop>
-      <from>Switch / case</from>
-      <to>Focus</to>
+      <from>Benchmark</from>
+      <to>Union</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>Central/Eastern Europe</from>
+      <to>Union</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>Focus</from>
+      <to>Union</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>Post-Soviet</from>
+      <to>Union</to>
       <enabled>Y</enabled>
     </hop>
     <hop>
       <from>Switch / case</from>
-      <to>Western Europe</to>
+      <to>Benchmark</to>
       <enabled>Y</enabled>
     </hop>
     <hop>
@@ -62,53 +57,48 @@
     </hop>
     <hop>
       <from>Switch / case</from>
+      <to>Focus</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>Switch / case</from>
       <to>Post-Soviet</to>
       <enabled>Y</enabled>
     </hop>
     <hop>
       <from>Switch / case</from>
-      <to>Benchmark</to>
-      <enabled>Y</enabled>
-    </hop>
-    <hop>
-      <from>Focus</from>
-      <to>Union 2</to>
+      <to>Western Europe</to>
       <enabled>Y</enabled>
     </hop>
     <hop>
       <from>Western Europe</from>
-      <to>Union 2</to>
+      <to>Union</to>
       <enabled>Y</enabled>
     </hop>
     <hop>
-      <from>Central/Eastern Europe</from>
-      <to>Union 2</to>
+      <from>Tables input</from>
+      <to>Add group column</to>
       <enabled>Y</enabled>
     </hop>
     <hop>
-      <from>Benchmark</from>
-      <to>Union 2</to>
+      <from>Union</from>
+      <to>Sort rows</to>
       <enabled>Y</enabled>
     </hop>
     <hop>
-      <from>Post-Soviet</from>
-      <to>Union 2</to>
-      <enabled>Y</enabled>
-    </hop>
-    <hop>
-      <from>Union 2</from>
-      <to>country_mapping.csv output</to>
-      <enabled>Y</enabled>
-    </hop>
-    <hop>
-      <from>Union 2</from>
+      <from>Union</from>
       <to>COUNTRY_MAPPING output</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>Sort rows</from>
+      <to>country_mapping.csv output</to>
       <enabled>Y</enabled>
     </hop>
   </order>
   <transform>
-    <name>HISTORICAL_EVENTS input</name>
-    <type>TableInput</type>
+    <name>Add group column</name>
+    <type>FieldSplitter</type>
     <description/>
     <distribute>Y</distribute>
     <custom_distribution/>
@@ -117,24 +107,35 @@
       <method>none</method>
       <schema_name/>
     </partitioning>
-    <connection>Staging</connection>
-    <execute_each_row>N</execute_each_row>
-    <limit>0</limit>
-    <sql>SELECT
-  DISTINCT iso3,
-  country_name
-FROM stagingDB.HISTORICAL_EVENTS
-</sql>
-    <variables_active>N</variables_active>
+    <delimiter>,</delimiter>
+    <fields>
+      <field>
+        <idrem>N</idrem>
+        <length>-1</length>
+        <name>country_name</name>
+        <precision>-1</precision>
+        <trimtype>none</trimtype>
+        <type>String</type>
+      </field>
+      <field>
+        <idrem>N</idrem>
+        <length>-1</length>
+        <name>country_group</name>
+        <precision>-1</precision>
+        <trimtype>none</trimtype>
+        <type>String</type>
+      </field>
+    </fields>
+    <splitfield>country_name</splitfield>
     <attributes/>
     <GUI>
-      <xloc>271</xloc>
-      <yloc>230</yloc>
+      <xloc>178</xloc>
+      <yloc>158</yloc>
     </GUI>
   </transform>
   <transform>
-    <name>MADDISON_INDICATORS input</name>
-    <type>TableInput</type>
+    <name>Benchmark</name>
+    <type>SetValueConstant</type>
     <description/>
     <distribute>Y</distribute>
     <custom_distribution/>
@@ -143,24 +144,24 @@ FROM stagingDB.HISTORICAL_EVENTS
       <method>none</method>
       <schema_name/>
     </partitioning>
-    <connection>Staging</connection>
-    <execute_each_row>N</execute_each_row>
-    <limit>0</limit>
-    <sql>SELECT
-  DISTINCT iso3,
-  country_name
-FROM stagingDB.MADDISON_INDICATORS
-</sql>
-    <variables_active>N</variables_active>
+    <usevar>N</usevar>
+    <fields>
+      <field>
+        <name>country_group</name>
+        <value>Benchmark</value>
+        <mask/>
+        <set_empty_string>N</set_empty_string>
+      </field>
+    </fields>
     <attributes/>
     <GUI>
-      <xloc>267</xloc>
-      <yloc>322</yloc>
+      <xloc>303</xloc>
+      <yloc>282</yloc>
     </GUI>
   </transform>
   <transform>
-    <name>WDI_INDICATORS input</name>
-    <type>TableInput</type>
+    <name>COUNTRY_MAPPING output</name>
+    <type>TableOutput</type>
     <description/>
     <distribute>Y</distribute>
     <custom_distribution/>
@@ -169,24 +170,40 @@ FROM stagingDB.MADDISON_INDICATORS
       <method>none</method>
       <schema_name/>
     </partitioning>
+    <add_columns>N</add_columns>
+    <always_drop_and_recreate>N</always_drop_and_recreate>
+    <auto_update_table_structure>N</auto_update_table_structure>
+    <change_column_types>N</change_column_types>
+    <commit>1000</commit>
     <connection>Staging</connection>
-    <execute_each_row>N</execute_each_row>
-    <limit>0</limit>
-    <sql>SELECT
-  DISTINCT iso3,
-  country_name
-FROM stagingDB.WDI_INDICATORS
-</sql>
-    <variables_active>N</variables_active>
+    <drop_columns>N</drop_columns>
+    <fields>
+</fields>
+    <ignore_errors>N</ignore_errors>
+    <only_when_have_rows>N</only_when_have_rows>
+    <partitioning_daily>N</partitioning_daily>
+    <partitioning_enabled>N</partitioning_enabled>
+    <partitioning_field/>
+    <partitioning_monthly>Y</partitioning_monthly>
+    <return_field/>
+    <return_keys>N</return_keys>
+    <schema>stagingDB</schema>
+    <specify_fields>N</specify_fields>
+    <table>COUNTRY_MAPPING</table>
+    <tablename_field/>
+    <tablename_in_field>N</tablename_in_field>
+    <tablename_in_table>Y</tablename_in_table>
+    <truncate>Y</truncate>
+    <use_batch>Y</use_batch>
     <attributes/>
     <GUI>
-      <xloc>267</xloc>
-      <yloc>406</yloc>
+      <xloc>803</xloc>
+      <yloc>156</yloc>
     </GUI>
   </transform>
   <transform>
-    <name>Union</name>
-    <type>UniqueRowsByHashSet</type>
+    <name>Central/Eastern Europe</name>
+    <type>SetValueConstant</type>
     <description/>
     <distribute>Y</distribute>
     <custom_distribution/>
@@ -195,14 +212,71 @@ FROM stagingDB.WDI_INDICATORS
       <method>none</method>
       <schema_name/>
     </partitioning>
-    <store_values>Y</store_values>
-    <reject_duplicate_row>N</reject_duplicate_row>
-    <error_description/>
-    <fields>      </fields>
+    <usevar>N</usevar>
+    <fields>
+      <field>
+        <name>country_group</name>
+        <value>Central/Eastern Europe</value>
+        <mask/>
+        <set_empty_string>N</set_empty_string>
+      </field>
+    </fields>
     <attributes/>
     <GUI>
-      <xloc>495</xloc>
-      <yloc>324</yloc>
+      <xloc>457</xloc>
+      <yloc>158</yloc>
+    </GUI>
+  </transform>
+  <transform>
+    <name>Focus</name>
+    <type>SetValueConstant</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <usevar>N</usevar>
+    <fields>
+      <field>
+        <name>country_group</name>
+        <value>Focus</value>
+        <mask/>
+        <set_empty_string>N</set_empty_string>
+      </field>
+    </fields>
+    <attributes/>
+    <GUI>
+      <xloc>302</xloc>
+      <yloc>14</yloc>
+    </GUI>
+  </transform>
+  <transform>
+    <name>Post-Soviet</name>
+    <type>SetValueConstant</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <usevar>N</usevar>
+    <fields>
+      <field>
+        <name>country_group</name>
+        <value>Post-Soviet</value>
+        <mask/>
+        <set_empty_string>N</set_empty_string>
+      </field>
+    </fields>
+    <attributes/>
+    <GUI>
+      <xloc>431</xloc>
+      <yloc>287</yloc>
     </GUI>
   </transform>
   <transform>
@@ -216,10 +290,6 @@ FROM stagingDB.WDI_INDICATORS
       <method>none</method>
       <schema_name/>
     </partitioning>
-    <case_value_decimal/>
-    <case_value_format/>
-    <case_value_group/>
-    <case_value_type/>
     <cases>
       <case>
         <target_transform>Focus</target_transform>
@@ -286,18 +356,17 @@ FROM stagingDB.WDI_INDICATORS
         <value>European Union</value>
       </case>
     </cases>
-    <default_target_transform/>
     <fieldname>country_name</fieldname>
     <use_contains>N</use_contains>
     <attributes/>
     <GUI>
-      <xloc>738</xloc>
-      <yloc>322</yloc>
+      <xloc>303</xloc>
+      <yloc>158</yloc>
     </GUI>
   </transform>
   <transform>
-    <name>Add group column</name>
-    <type>FieldSplitter</type>
+    <name>Tables input</name>
+    <type>TableInput</type>
     <description/>
     <distribute>Y</distribute>
     <custom_distribution/>
@@ -306,76 +375,26 @@ FROM stagingDB.WDI_INDICATORS
       <method>none</method>
       <schema_name/>
     </partitioning>
-    <delimiter>,</delimiter>
-    <enclosure/>
-    <escape_string/>
-    <fields>
-      <field>
-        <currency/>
-        <decimal/>
-        <format/>
-        <group/>
-        <id/>
-        <idrem>N</idrem>
-        <ifnull/>
-        <length>-1</length>
-        <name>country_name</name>
-        <nullif/>
-        <precision>-1</precision>
-        <trimtype>none</trimtype>
-        <type>String</type>
-      </field>
-      <field>
-        <currency/>
-        <decimal/>
-        <format/>
-        <group/>
-        <id/>
-        <idrem>N</idrem>
-        <ifnull/>
-        <length>-1</length>
-        <name>country_group</name>
-        <nullif/>
-        <precision>-1</precision>
-        <trimtype>none</trimtype>
-        <type>String</type>
-      </field>
-    </fields>
-    <splitfield>country_name</splitfield>
+    <connection>Staging</connection>
+    <execute_each_row>N</execute_each_row>
+    <limit>0</limit>
+    <sql>SELECT iso3, country_name
+FROM stagingDB.HISTORICAL_EVENTS
+UNION
+SELECT iso3, country_name
+FROM stagingDB.MADDISON_INDICATORS
+UNION
+SELECT iso3, country_name
+FROM stagingDB.WDI_INDICATORS</sql>
+    <variables_active>N</variables_active>
     <attributes/>
     <GUI>
-      <xloc>613</xloc>
-      <yloc>323</yloc>
+      <xloc>37</xloc>
+      <yloc>158</yloc>
     </GUI>
   </transform>
   <transform>
-    <name>Focus</name>
-    <type>SetValueConstant</type>
-    <description/>
-    <distribute>Y</distribute>
-    <custom_distribution/>
-    <copies>1</copies>
-    <partitioning>
-      <method>none</method>
-      <schema_name/>
-    </partitioning>
-    <usevar>N</usevar>
-    <fields>
-      <field>
-        <name>country_group</name>
-        <value>Focus</value>
-        <mask/>
-        <set_empty_string>N</set_empty_string>
-      </field>
-    </fields>
-    <attributes/>
-    <GUI>
-      <xloc>738</xloc>
-      <yloc>201</yloc>
-    </GUI>
-  </transform>
-  <transform>
-    <name>Union 2</name>
+    <name>Union</name>
     <type>UniqueRowsByHashSet</type>
     <description/>
     <distribute>N</distribute>
@@ -391,8 +410,8 @@ FROM stagingDB.WDI_INDICATORS
     <fields>      </fields>
     <attributes/>
     <GUI>
-      <xloc>1083</xloc>
-      <yloc>320</yloc>
+      <xloc>647</xloc>
+      <yloc>156</yloc>
     </GUI>
   </transform>
   <transform>
@@ -417,86 +436,8 @@ FROM stagingDB.WDI_INDICATORS
     </fields>
     <attributes/>
     <GUI>
-      <xloc>852</xloc>
-      <yloc>226</yloc>
-    </GUI>
-  </transform>
-  <transform>
-    <name>Central/Eastern Europe</name>
-    <type>SetValueConstant</type>
-    <description/>
-    <distribute>Y</distribute>
-    <custom_distribution/>
-    <copies>1</copies>
-    <partitioning>
-      <method>none</method>
-      <schema_name/>
-    </partitioning>
-    <usevar>N</usevar>
-    <fields>
-      <field>
-        <name>country_group</name>
-        <value>Central/Eastern Europe</value>
-        <mask/>
-        <set_empty_string>N</set_empty_string>
-      </field>
-    </fields>
-    <attributes/>
-    <GUI>
-      <xloc>893</xloc>
-      <yloc>323</yloc>
-    </GUI>
-  </transform>
-  <transform>
-    <name>Post-Soviet</name>
-    <type>SetValueConstant</type>
-    <description/>
-    <distribute>Y</distribute>
-    <custom_distribution/>
-    <copies>1</copies>
-    <partitioning>
-      <method>none</method>
-      <schema_name/>
-    </partitioning>
-    <usevar>N</usevar>
-    <fields>
-      <field>
-        <name>country_group</name>
-        <value>Post-Soviet</value>
-        <mask/>
-        <set_empty_string>N</set_empty_string>
-      </field>
-    </fields>
-    <attributes/>
-    <GUI>
-      <xloc>867</xloc>
-      <yloc>453</yloc>
-    </GUI>
-  </transform>
-  <transform>
-    <name>Benchmark</name>
-    <type>SetValueConstant</type>
-    <description/>
-    <distribute>Y</distribute>
-    <custom_distribution/>
-    <copies>1</copies>
-    <partitioning>
-      <method>none</method>
-      <schema_name/>
-    </partitioning>
-    <usevar>N</usevar>
-    <fields>
-      <field>
-        <name>country_group</name>
-        <value>Benchmark</value>
-        <mask/>
-        <set_empty_string>N</set_empty_string>
-      </field>
-    </fields>
-    <attributes/>
-    <GUI>
-      <xloc>734</xloc>
-      <yloc>454</yloc>
+      <xloc>448</xloc>
+      <yloc>19</yloc>
     </GUI>
   </transform>
   <transform>
@@ -546,13 +487,13 @@ FROM stagingDB.WDI_INDICATORS
     </fields>
     <attributes/>
     <GUI>
-      <xloc>1239</xloc>
-      <yloc>320</yloc>
+      <xloc>806</xloc>
+      <yloc>276</yloc>
     </GUI>
   </transform>
   <transform>
-    <name>COUNTRY_MAPPING output</name>
-    <type>TableOutput</type>
+    <name>Sort rows</name>
+    <type>SortRows</type>
     <description/>
     <distribute>Y</distribute>
     <custom_distribution/>
@@ -561,35 +502,27 @@ FROM stagingDB.WDI_INDICATORS
       <method>none</method>
       <schema_name/>
     </partitioning>
-    <add_columns>N</add_columns>
-    <always_drop_and_recreate>N</always_drop_and_recreate>
-    <auto_update_table_structure>N</auto_update_table_structure>
-    <change_column_types>N</change_column_types>
-    <commit>1000</commit>
-    <connection>Staging</connection>
-    <drop_columns>N</drop_columns>
+    <compress>N</compress>
+    <compress_variables/>
+    <directory>${java.io.tmpdir}</directory>
     <fields>
-</fields>
-    <ignore_errors>N</ignore_errors>
-    <only_when_have_rows>N</only_when_have_rows>
-    <partitioning_daily>N</partitioning_daily>
-    <partitioning_enabled>N</partitioning_enabled>
-    <partitioning_field/>
-    <partitioning_monthly>Y</partitioning_monthly>
-    <return_field/>
-    <return_keys>N</return_keys>
-    <schema>stagingDB</schema>
-    <specify_fields>N</specify_fields>
-    <table>COUNTRY_MAPPING</table>
-    <tablename_field/>
-    <tablename_in_field>N</tablename_in_field>
-    <tablename_in_table>Y</tablename_in_table>
-    <truncate>Y</truncate>
-    <use_batch>Y</use_batch>
+      <field>
+        <ascending>Y</ascending>
+        <case_sensitive>N</case_sensitive>
+        <collator_enabled>N</collator_enabled>
+        <collator_strength>0</collator_strength>
+        <name>country_name</name>
+        <presorted>N</presorted>
+      </field>
+    </fields>
+    <free_memory/>
+    <sort_prefix>out</sort_prefix>
+    <sort_size>1000000</sort_size>
+    <unique_rows>N</unique_rows>
     <attributes/>
     <GUI>
-      <xloc>1083</xloc>
-      <yloc>463</yloc>
+      <xloc>647</xloc>
+      <yloc>276</yloc>
     </GUI>
   </transform>
   <transform_error_handling>

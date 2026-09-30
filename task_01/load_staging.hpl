@@ -71,8 +71,8 @@
     <use_batch>Y</use_batch>
     <attributes/>
     <GUI>
-      <xloc>493</xloc>
-      <yloc>182</yloc>
+      <xloc>395</xloc>
+      <yloc>37</yloc>
     </GUI>
   </transform>
   <transform>
@@ -110,8 +110,8 @@
     <use_batch>Y</use_batch>
     <attributes/>
     <GUI>
-      <xloc>490</xloc>
-      <yloc>342</yloc>
+      <xloc>393</xloc>
+      <yloc>120</yloc>
     </GUI>
   </transform>
   <transform>
@@ -149,8 +149,8 @@
     <use_batch>Y</use_batch>
     <attributes/>
     <GUI>
-      <xloc>490</xloc>
-      <yloc>491</yloc>
+      <xloc>390</xloc>
+      <yloc>205</yloc>
     </GUI>
   </transform>
   <transform>
@@ -249,8 +249,8 @@
     </fields>
     <attributes/>
     <GUI>
-      <xloc>208</xloc>
-      <yloc>181</yloc>
+      <xloc>110</xloc>
+      <yloc>36</yloc>
     </GUI>
   </transform>
   <transform>
@@ -349,8 +349,8 @@
     </fields>
     <attributes/>
     <GUI>
-      <xloc>206</xloc>
-      <yloc>342</yloc>
+      <xloc>109</xloc>
+      <yloc>120</yloc>
     </GUI>
   </transform>
   <transform>
@@ -449,8 +449,8 @@
     </fields>
     <attributes/>
     <GUI>
-      <xloc>204</xloc>
-      <yloc>492</yloc>
+      <xloc>104</xloc>
+      <yloc>206</yloc>
     </GUI>
   </transform>
   <transform_error_handling>
