@@ -63,3 +63,15 @@ CREATE TABLE IF NOT EXISTS FACT_SECTOR (
   FOREIGN KEY (time_id) REFERENCES DIM_TIME(time_id),
   FOREIGN KEY (sector_id) REFERENCES DIM_SECTOR(sector_id)
 );
+
+CREATE TABLE IF NOT EXISTS BRIDGE_EVENTS (
+  event_id        INT COMMENT 'Surrogate key',
+  country_id      INT COMMENT 'Foreign key to country dimension',
+  time_id         INT COMMENT 'Foreign key to time dimension',
+  event           VARCHAR(255) COMMENT 'Description of historical event(s)',
+  category        VARCHAR(255) COMMENT 'Category/classification of the event(s)',
+  economic_impact VARCHAR(255) COMMENT 'Qualitative description/classification of the economic impact of the event(s)',
+  PRIMARY KEY (event_id),
+  FOREIGN KEY (country_id) REFERENCES DIM_COUNTRY(country_id),
+  FOREIGN KEY (time_id) REFERENCES DIM_TIME(time_id)
+);
