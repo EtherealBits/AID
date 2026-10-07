@@ -1,6 +1,40 @@
 <Schema name="datawarehouseDB">
   <Cube name="ECONOMY" visible="true" cache="true" enabled="true">
-    <Table name="FACT_ECONOMY" alias="">
+    <Table name="FACT_ECONOMY">
+    </Table>
+    <Dimension type="StandardDimension" visible="true" foreignKey="country_id" highCardinality="false" name="Country">
+      <Hierarchy name="Country Hierarchy" visible="true" hasAll="true" allMemberName="All Countries" primaryKey="country_id">
+        <Table name="DIM_COUNTRY">
+        </Table>
+        <Level name="Country Group" visible="true" column="country_group" type="String" uniqueMembers="false" levelType="Regular" hideMemberIf="Never">
+        </Level>
+        <Level name="Country" visible="true" column="country_name" type="String" uniqueMembers="false" levelType="Regular" hideMemberIf="Never">
+        </Level>
+      </Hierarchy>
+    </Dimension>
+    <Dimension type="TimeDimension" visible="true" foreignKey="time_id" highCardinality="false" name="Time">
+      <Hierarchy name="Time Hierarchy" visible="true" hasAll="true" allMemberName="All Times" primaryKey="time_id">
+        <Table name="DIM_TIME">
+        </Table>
+        <Level name="Decade" visible="true" column="decade" type="Integer" uniqueMembers="false" levelType="TimeYears" hideMemberIf="Never">
+        </Level>
+        <Level name="Year" visible="true" column="year" type="Integer" uniqueMembers="false" levelType="TimeYears" hideMemberIf="Never">
+        </Level>
+      </Hierarchy>
+    </Dimension>
+    <Measure name="gdp" column="gdp" datatype="Numeric" aggregator="sum" visible="true">
+    </Measure>
+    <Measure name="gdp_per_capita" column="gdp_per_capita" datatype="Numeric" aggregator="sum" visible="true">
+    </Measure>
+    <Measure name="gdp_growth_pct" column="gdp_growth_pct" datatype="Numeric" aggregator="sum" visible="true">
+    </Measure>
+    <Measure name="exports_pct_gdp" column="exports_pct_gdp" datatype="Numeric" aggregator="sum" visible="true">
+    </Measure>
+    <Measure name="imports_pct_gdp" column="imports_pct_gdp" datatype="Numeric" aggregator="sum" visible="true">
+    </Measure>
+  </Cube>
+  <Cube name="SOCIETY" visible="true" cache="true" enabled="true">
+    <Table name="FACT_SOCIETY" alias="">
     </Table>
     <Dimension type="StandardDimension" visible="true" foreignKey="country_id" name="Country">
       <Hierarchy name="Country Hierarchy" visible="true" hasAll="true" allMemberName="All Countries" primaryKey="country_id">
@@ -22,15 +56,53 @@
         </Level>
       </Hierarchy>
     </Dimension>
-    <Measure name="gdp" column="gdp" datatype="Numeric" aggregator="sum" visible="true">
+    <Measure name="population" column="population" datatype="Numeric" aggregator="sum" visible="true">
     </Measure>
-    <Measure name="gdp_per_capita" column="gdp_per_capita" datatype="Numeric" aggregator="sum" visible="true">
+    <Measure name="gni_per_capita" column="gni_per_capita" datatype="Numeric" aggregator="sum" visible="true">
     </Measure>
-    <Measure name="gdp_growth_pct" column="gdp_growth_pct" datatype="Numeric" aggregator="sum" visible="true">
+    <Measure name="life_expectancy" column="life_expectancy" datatype="Numeric" aggregator="sum" visible="true">
     </Measure>
-    <Measure name="exports_pct_gdp" column="exports_pct_gdp" datatype="Numeric" aggregator="sum" visible="true">
+    <Measure name="urban_pop_pct" column="urban_pop_pct" datatype="Numeric" aggregator="sum" visible="true">
     </Measure>
-    <Measure name="imports_pct_gdp" column="imports_pct_gdp" datatype="Numeric" aggregator="sum" visible="true">
+  </Cube>
+  <Cube name="SECTOR" visible="true" cache="true" enabled="true">
+    <Table name="FACT_SECTOR">
+    </Table>
+    <Dimension type="StandardDimension" visible="true" foreignKey="country_id" name="Country">
+      <Hierarchy name="Country Hierarchy" visible="true" hasAll="true" allMemberName="All Countries" primaryKey="country_id">
+        <Table name="DIM_COUNTRY">
+        </Table>
+        <Level name="Country Group" visible="true" column="country_group" type="String" uniqueMembers="false" levelType="Regular">
+        </Level>
+        <Level name="Country" visible="true" column="country_name" type="String" uniqueMembers="false" levelType="Regular">
+        </Level>
+      </Hierarchy>
+    </Dimension>
+    <Dimension type="TimeDimension" visible="true" foreignKey="time_id" name="Time">
+      <Hierarchy name="Time Hierarchy" visible="true" hasAll="true" allMemberName="All Times" primaryKey="time_id">
+        <Table name="DIM_TIME">
+        </Table>
+        <Level name="Decade" visible="true" column="decade" type="Integer" uniqueMembers="false" levelType="TimeYears">
+        </Level>
+        <Level name="Year" visible="true" column="year" type="Integer" uniqueMembers="false" levelType="TimeYears">
+        </Level>
+      </Hierarchy>
+    </Dimension>
+    <Dimension type="StandardDimension" visible="true" foreignKey="sector_id" name="Sector">
+      <Hierarchy name="Sector Hierarchy" visible="true" hasAll="true" allMemberName="All Sectors" primaryKey="sector_id">
+        <Table name="DIM_SECTOR">
+        </Table>
+        <Level name="Broad Sector" visible="true" column="broad_sector" type="String" uniqueMembers="false" levelType="Regular">
+        </Level>
+        <Level name="Sector" visible="true" column="sector_name" type="String" uniqueMembers="false" levelType="Regular">
+        </Level>
+      </Hierarchy>
+    </Dimension>
+    <Measure name="value_added_pct_gdp" column="value_added_pct_gdp" datatype="Numeric" aggregator="sum" visible="true">
+    </Measure>
+    <Measure name="value_added_usd" column="value_added_usd" datatype="Numeric" aggregator="sum" visible="true">
+    </Measure>
+    <Measure name="employment_pct" column="employment_pct" datatype="Numeric" aggregator="sum" visible="true">
     </Measure>
   </Cube>
 </Schema>
