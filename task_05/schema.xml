@@ -1,28 +1,42 @@
 <Schema name="datawarehouseDB">
+  <Dimension type="StandardDimension" visible="true" foreignKey="country_id" highCardinality="false" name="Country">
+    <Hierarchy name="Country Hierarchy" visible="true" hasAll="true" allMemberName="All Countries" primaryKey="country_id">
+      <Table name="DIM_COUNTRY" alias="">
+      </Table>
+      <Level name="Country Group" visible="true" column="country_group" type="String" uniqueMembers="false" levelType="Regular" hideMemberIf="Never">
+      </Level>
+      <Level name="Country" visible="true" column="country_name" type="String" uniqueMembers="false" levelType="Regular" hideMemberIf="Never">
+      </Level>
+    </Hierarchy>
+  </Dimension>
+  <Dimension type="TimeDimension" visible="true" foreignKey="time_id" highCardinality="false" name="Time">
+    <Hierarchy name="Time Hierarchy" visible="true" hasAll="true" allMemberName="All Times" primaryKey="time_id">
+      <Table name="DIM_TIME">
+      </Table>
+      <Level name="Decade" visible="true" column="decade" type="Integer" uniqueMembers="false" levelType="TimeYears" hideMemberIf="Never">
+      </Level>
+      <Level name="Year" visible="true" column="year" type="Integer" uniqueMembers="false" levelType="TimeYears" hideMemberIf="Never">
+      </Level>
+    </Hierarchy>
+  </Dimension>
+  <Dimension type="StandardDimension" visible="true" foreignKey="sector_id" highCardinality="false" name="Sector">
+    <Hierarchy name="Sector Hierarchy" visible="true" hasAll="true" allMemberName="All Sectors" primaryKey="sector_id">
+      <Table name="DIM_SECTOR">
+      </Table>
+      <Level name="Broad Sector" visible="true" column="broad_sector" type="String" uniqueMembers="false" levelType="Regular" hideMemberIf="Never">
+      </Level>
+      <Level name="Sector" visible="true" column="sector_name" type="String" uniqueMembers="false" levelType="Regular" hideMemberIf="Never">
+      </Level>
+    </Hierarchy>
+  </Dimension>
   <Cube name="ECONOMY" visible="true" cache="true" enabled="true">
     <Table name="FACT_ECONOMY">
     </Table>
-    <Dimension type="StandardDimension" visible="true" foreignKey="country_id" highCardinality="false" name="Country">
-      <Hierarchy name="Country Hierarchy" visible="true" hasAll="true" allMemberName="All Countries" primaryKey="country_id">
-        <Table name="DIM_COUNTRY">
-        </Table>
-        <Level name="Country Group" visible="true" column="country_group" type="String" uniqueMembers="false" levelType="Regular" hideMemberIf="Never">
-        </Level>
-        <Level name="Country" visible="true" column="country_name" type="String" uniqueMembers="false" levelType="Regular" hideMemberIf="Never">
-        </Level>
-      </Hierarchy>
-    </Dimension>
-    <Dimension type="TimeDimension" visible="true" foreignKey="time_id" highCardinality="false" name="Time">
-      <Hierarchy name="Time Hierarchy" visible="true" hasAll="true" allMemberName="All Times" primaryKey="time_id">
-        <Table name="DIM_TIME">
-        </Table>
-        <Level name="Decade" visible="true" column="decade" type="Integer" uniqueMembers="false" levelType="TimeYears" hideMemberIf="Never">
-        </Level>
-        <Level name="Year" visible="true" column="year" type="Integer" uniqueMembers="false" levelType="TimeYears" hideMemberIf="Never">
-        </Level>
-      </Hierarchy>
-    </Dimension>
-    <Measure name="gdp" column="gdp" datatype="Numeric" aggregator="sum" visible="true">
+    <DimensionUsage source="Country" name="Country" visible="true" foreignKey="country_id" highCardinality="false">
+    </DimensionUsage>
+    <DimensionUsage source="Time" name="Time" visible="true" foreignKey="time_id" highCardinality="false">
+    </DimensionUsage>
+    <Measure name="gdp" column="gdp" datatype="Integer" aggregator="sum" visible="true">
     </Measure>
     <Measure name="gdp_per_capita" column="gdp_per_capita" datatype="Numeric" aggregator="sum" visible="true">
     </Measure>
@@ -34,28 +48,12 @@
     </Measure>
   </Cube>
   <Cube name="SOCIETY" visible="true" cache="true" enabled="true">
-    <Table name="FACT_SOCIETY" alias="">
+    <Table name="FACT_SOCIETY">
     </Table>
-    <Dimension type="StandardDimension" visible="true" foreignKey="country_id" name="Country">
-      <Hierarchy name="Country Hierarchy" visible="true" hasAll="true" allMemberName="All Countries" primaryKey="country_id">
-        <Table name="DIM_COUNTRY">
-        </Table>
-        <Level name="Country Group" visible="true" column="country_group" type="String" uniqueMembers="false" levelType="Regular">
-        </Level>
-        <Level name="Country" visible="true" column="country_name" type="String" uniqueMembers="false" levelType="Regular">
-        </Level>
-      </Hierarchy>
-    </Dimension>
-    <Dimension type="TimeDimension" visible="true" foreignKey="time_id" name="Time">
-      <Hierarchy name="Time Hierarchy" visible="true" hasAll="true" allMemberName="All Times" primaryKey="time_id">
-        <Table name="DIM_TIME">
-        </Table>
-        <Level name="Decade" visible="true" column="decade" type="Integer" uniqueMembers="false" levelType="TimeYears">
-        </Level>
-        <Level name="Year" visible="true" column="year" type="Integer" uniqueMembers="false" levelType="TimeYears">
-        </Level>
-      </Hierarchy>
-    </Dimension>
+    <DimensionUsage source="Country" name="Country" visible="true" foreignKey="country_id" highCardinality="false">
+    </DimensionUsage>
+    <DimensionUsage source="Time" name="Time" visible="true" foreignKey="time_id" highCardinality="false">
+    </DimensionUsage>
     <Measure name="population" column="population" datatype="Numeric" aggregator="sum" visible="true">
     </Measure>
     <Measure name="gni_per_capita" column="gni_per_capita" datatype="Numeric" aggregator="sum" visible="true">
@@ -68,36 +66,12 @@
   <Cube name="SECTOR" visible="true" cache="true" enabled="true">
     <Table name="FACT_SECTOR">
     </Table>
-    <Dimension type="StandardDimension" visible="true" foreignKey="country_id" name="Country">
-      <Hierarchy name="Country Hierarchy" visible="true" hasAll="true" allMemberName="All Countries" primaryKey="country_id">
-        <Table name="DIM_COUNTRY">
-        </Table>
-        <Level name="Country Group" visible="true" column="country_group" type="String" uniqueMembers="false" levelType="Regular">
-        </Level>
-        <Level name="Country" visible="true" column="country_name" type="String" uniqueMembers="false" levelType="Regular">
-        </Level>
-      </Hierarchy>
-    </Dimension>
-    <Dimension type="TimeDimension" visible="true" foreignKey="time_id" name="Time">
-      <Hierarchy name="Time Hierarchy" visible="true" hasAll="true" allMemberName="All Times" primaryKey="time_id">
-        <Table name="DIM_TIME">
-        </Table>
-        <Level name="Decade" visible="true" column="decade" type="Integer" uniqueMembers="false" levelType="TimeYears">
-        </Level>
-        <Level name="Year" visible="true" column="year" type="Integer" uniqueMembers="false" levelType="TimeYears">
-        </Level>
-      </Hierarchy>
-    </Dimension>
-    <Dimension type="StandardDimension" visible="true" foreignKey="sector_id" name="Sector">
-      <Hierarchy name="Sector Hierarchy" visible="true" hasAll="true" allMemberName="All Sectors" primaryKey="sector_id">
-        <Table name="DIM_SECTOR">
-        </Table>
-        <Level name="Broad Sector" visible="true" column="broad_sector" type="String" uniqueMembers="false" levelType="Regular">
-        </Level>
-        <Level name="Sector" visible="true" column="sector_name" type="String" uniqueMembers="false" levelType="Regular">
-        </Level>
-      </Hierarchy>
-    </Dimension>
+    <DimensionUsage source="Country" name="Country" visible="true" foreignKey="country_id" highCardinality="false">
+    </DimensionUsage>
+    <DimensionUsage source="Time" name="Time" visible="true" foreignKey="time_id" highCardinality="false">
+    </DimensionUsage>
+    <DimensionUsage source="Sector" name="Sector" visible="true" foreignKey="sector_id" highCardinality="false">
+    </DimensionUsage>
     <Measure name="value_added_pct_gdp" column="value_added_pct_gdp" datatype="Numeric" aggregator="sum" visible="true">
     </Measure>
     <Measure name="value_added_usd" column="value_added_usd" datatype="Numeric" aggregator="sum" visible="true">
@@ -105,4 +79,36 @@
     <Measure name="employment_pct" column="employment_pct" datatype="Numeric" aggregator="sum" visible="true">
     </Measure>
   </Cube>
+  <VirtualCube enabled="true" name="Virtual Cube">
+    <VirtualCubeDimension name="Country">
+    </VirtualCubeDimension>
+    <VirtualCubeDimension name="Time">
+    </VirtualCubeDimension>
+    <VirtualCubeDimension name="Sector">
+    </VirtualCubeDimension>
+    <VirtualCubeMeasure cubeName="ECONOMY" name="[Measures].[gdp]" visible="true">
+    </VirtualCubeMeasure>
+    <VirtualCubeMeasure cubeName="ECONOMY" name="[Measures].[gdp_per_capita]" visible="true">
+    </VirtualCubeMeasure>
+    <VirtualCubeMeasure cubeName="ECONOMY" name="[Measures].[gdp_growth_pct]" visible="true">
+    </VirtualCubeMeasure>
+    <VirtualCubeMeasure cubeName="ECONOMY" name="[Measures].[exports_pct_gdp]" visible="true">
+    </VirtualCubeMeasure>
+    <VirtualCubeMeasure cubeName="ECONOMY" name="[Measures].[imports_pct_gdp]" visible="true">
+    </VirtualCubeMeasure>
+    <VirtualCubeMeasure cubeName="SOCIETY" name="[Measures].[population]" visible="true">
+    </VirtualCubeMeasure>
+    <VirtualCubeMeasure cubeName="SOCIETY" name="[Measures].[gni_per_capita]" visible="true">
+    </VirtualCubeMeasure>
+    <VirtualCubeMeasure cubeName="SOCIETY" name="[Measures].[life_expectancy]" visible="true">
+    </VirtualCubeMeasure>
+    <VirtualCubeMeasure cubeName="SOCIETY" name="[Measures].[urban_pop_pct]" visible="true">
+    </VirtualCubeMeasure>
+    <VirtualCubeMeasure cubeName="SECTOR" name="[Measures].[value_added_pct_gdp]" visible="true">
+    </VirtualCubeMeasure>
+    <VirtualCubeMeasure cubeName="SECTOR" name="[Measures].[value_added_usd]" visible="true">
+    </VirtualCubeMeasure>
+    <VirtualCubeMeasure cubeName="SECTOR" name="[Measures].[employment_pct]" visible="true">
+    </VirtualCubeMeasure>
+  </VirtualCube>
 </Schema>
