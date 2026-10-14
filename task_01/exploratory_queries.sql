@@ -132,3 +132,55 @@ WHERE year NOT IN (
   SELECT DISTINCT year
   FROM WDI_INDICATORS
 );
+
+-- MADDISON_INDICATORS
+
+-- units of measurement
+SELECT DISTINCT indicator_code, indicator_name
+FROM MADDISON_INDICATORS;
+
+-- row counts
+SELECT COUNT(*) AS num_rows
+FROM MADDISON_INDICATORS;
+
+-- number of countries
+SELECT COUNT(DISTINCT country_name) AS num_countries
+FROM MADDISON_INDICATORS;
+
+-- number of years
+SELECT COUNT(DISTINCT year) AS num_years
+FROM MADDISON_INDICATORS;
+
+-- year span
+SELECT MIN(year) AS min_year, MAX(year) AS max_year
+FROM MADDISON_INDICATORS;
+
+-- distinct countries
+SELECT DISTINCT country_name
+FROM MADDISON_INDICATORS
+ORDER BY country_name;
+
+-- missing values
+SELECT *
+FROM MADDISON_INDICATORS
+WHERE iso3 IS NULL OR iso3 = ''
+  OR country_name IS NULL OR country_name = ''
+  OR indicator_code IS NULL OR indicator_code = ''
+  OR indicator_name IS NULL OR indicator_name = ''
+  OR year IS NULL OR year = 0
+  OR value IS NULL;
+
+-- years with no observations
+WITH RECURSIVE years AS (
+  SELECT (SELECT MIN(year) FROM MADDISON_INDICATORS) AS year
+  UNION ALL
+  SELECT year + 1
+  FROM years
+  WHERE year < (SELECT MAX(year) FROM MADDISON_INDICATORS)
+)
+SELECT year AS years_without_events
+FROM years
+WHERE year NOT IN (
+  SELECT DISTINCT year
+  FROM MADDISON_INDICATORS
+);
