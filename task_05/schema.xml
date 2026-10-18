@@ -1,7 +1,7 @@
 <Schema name="datawarehouseDB">
-  <Dimension type="StandardDimension" visible="true" foreignKey="country_id" highCardinality="false" name="Country">
+  <Dimension type="StandardDimension" visible="true" highCardinality="false" name="Country">
     <Hierarchy name="Country Hierarchy" visible="true" hasAll="true" allMemberName="All Countries" primaryKey="country_id">
-      <Table name="DIM_COUNTRY" alias="">
+      <Table name="DIM_COUNTRY">
       </Table>
       <Level name="Country Group" visible="true" column="country_group" type="String" uniqueMembers="false" levelType="Regular" hideMemberIf="Never">
       </Level>
@@ -9,7 +9,7 @@
       </Level>
     </Hierarchy>
   </Dimension>
-  <Dimension type="TimeDimension" visible="true" foreignKey="time_id" highCardinality="false" name="Time">
+  <Dimension type="TimeDimension" visible="true" highCardinality="false" name="Time">
     <Hierarchy name="Time Hierarchy" visible="true" hasAll="true" allMemberName="All Times" primaryKey="time_id">
       <Table name="DIM_TIME">
       </Table>
@@ -19,7 +19,7 @@
       </Level>
     </Hierarchy>
   </Dimension>
-  <Dimension type="StandardDimension" visible="true" foreignKey="sector_id" highCardinality="false" name="Sector">
+  <Dimension type="StandardDimension" visible="true" highCardinality="false" name="Sector">
     <Hierarchy name="Sector Hierarchy" visible="true" hasAll="true" allMemberName="All Sectors" primaryKey="sector_id">
       <Table name="DIM_SECTOR">
       </Table>
@@ -36,15 +36,15 @@
     </DimensionUsage>
     <DimensionUsage source="Time" name="Time" visible="true" foreignKey="time_id" highCardinality="false">
     </DimensionUsage>
-    <Measure name="gdp" column="gdp" datatype="Integer" aggregator="sum" visible="true">
+    <Measure name="gdp" column="gdp" datatype="Integer" aggregator="avg" visible="true">
     </Measure>
-    <Measure name="gdp_per_capita" column="gdp_per_capita" datatype="Numeric" aggregator="sum" visible="true">
+    <Measure name="gdp_per_capita" column="gdp_per_capita" datatype="Numeric" aggregator="avg" visible="true">
     </Measure>
-    <Measure name="gdp_growth_pct" column="gdp_growth_pct" datatype="Numeric" aggregator="sum" visible="true">
+    <Measure name="gdp_growth_pct" column="gdp_growth_pct" datatype="Numeric" aggregator="avg" visible="true">
     </Measure>
-    <Measure name="exports_pct_gdp" column="exports_pct_gdp" datatype="Numeric" aggregator="sum" visible="true">
+    <Measure name="exports_pct_gdp" column="exports_pct_gdp" datatype="Numeric" aggregator="avg" visible="true">
     </Measure>
-    <Measure name="imports_pct_gdp" column="imports_pct_gdp" datatype="Numeric" aggregator="sum" visible="true">
+    <Measure name="imports_pct_gdp" column="imports_pct_gdp" datatype="Numeric" aggregator="avg" visible="true">
     </Measure>
   </Cube>
   <Cube name="SOCIETY" visible="true" cache="true" enabled="true">
@@ -54,13 +54,13 @@
     </DimensionUsage>
     <DimensionUsage source="Time" name="Time" visible="true" foreignKey="time_id" highCardinality="false">
     </DimensionUsage>
-    <Measure name="population" column="population" datatype="Numeric" aggregator="sum" visible="true">
+    <Measure name="population" column="population" datatype="Numeric" aggregator="avg" visible="true">
     </Measure>
-    <Measure name="gni_per_capita" column="gni_per_capita" datatype="Numeric" aggregator="sum" visible="true">
+    <Measure name="gni_per_capita" column="gni_per_capita" datatype="Numeric" aggregator="avg" visible="true">
     </Measure>
-    <Measure name="life_expectancy" column="life_expectancy" datatype="Numeric" aggregator="sum" visible="true">
+    <Measure name="life_expectancy" column="life_expectancy" datatype="Numeric" aggregator="avg" visible="true">
     </Measure>
-    <Measure name="urban_pop_pct" column="urban_pop_pct" datatype="Numeric" aggregator="sum" visible="true">
+    <Measure name="urban_pop_pct" column="urban_pop_pct" datatype="Numeric" aggregator="avg" visible="true">
     </Measure>
   </Cube>
   <Cube name="SECTOR" visible="true" cache="true" enabled="true">
@@ -72,19 +72,19 @@
     </DimensionUsage>
     <DimensionUsage source="Sector" name="Sector" visible="true" foreignKey="sector_id" highCardinality="false">
     </DimensionUsage>
-    <Measure name="value_added_pct_gdp" column="value_added_pct_gdp" datatype="Numeric" aggregator="sum" visible="true">
+    <Measure name="value_added_pct_gdp" column="value_added_pct_gdp" datatype="Numeric" aggregator="avg" visible="true">
     </Measure>
-    <Measure name="value_added_usd" column="value_added_usd" datatype="Numeric" aggregator="sum" visible="true">
+    <Measure name="value_added_usd" column="value_added_usd" datatype="Numeric" aggregator="avg" visible="true">
     </Measure>
-    <Measure name="employment_pct" column="employment_pct" datatype="Numeric" aggregator="sum" visible="true">
+    <Measure name="employment_pct" column="employment_pct" datatype="Numeric" aggregator="avg" visible="true">
     </Measure>
   </Cube>
-  <VirtualCube enabled="true" name="Virtual Cube">
-    <VirtualCubeDimension name="Country">
+  <VirtualCube enabled="true" name="Virtual Cube" visible="true">
+    <VirtualCubeDimension visible="true" highCardinality="false" name="Country">
     </VirtualCubeDimension>
-    <VirtualCubeDimension name="Time">
+    <VirtualCubeDimension visible="true" highCardinality="false" name="Time">
     </VirtualCubeDimension>
-    <VirtualCubeDimension name="Sector">
+    <VirtualCubeDimension visible="true" highCardinality="false" name="Sector">
     </VirtualCubeDimension>
     <VirtualCubeMeasure cubeName="ECONOMY" name="[Measures].[gdp]" visible="true">
     </VirtualCubeMeasure>
