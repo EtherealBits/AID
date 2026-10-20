@@ -67,40 +67,6 @@
     </hop>
   </order>
   <transform>
-    <name>Table input</name>
-    <type>TableInput</type>
-    <description/>
-    <distribute>Y</distribute>
-    <custom_distribution/>
-    <copies>1</copies>
-    <partitioning>
-      <method>none</method>
-      <schema_name/>
-    </partitioning>
-    <connection>Staging</connection>
-    <execute_each_row>N</execute_each_row>
-    <limit>0</limit>
-    <sql>SELECT country_name, year, indicator_code, value
-FROM WDI_INDICATORS
-WHERE indicator_code = 'NV.AGR.TOTL.ZS' OR
-	  indicator_code = 'NV.AGR.TOTL.CD' OR
-      indicator_code = 'NV.IND.TOTL.ZS' OR
-      indicator_code = 'NV.IND.TOTL.CD' OR
-      indicator_code = 'NV.IND.MANF.ZS' OR
-      indicator_code = 'NV.IND.MANF.CD' OR
-      indicator_code = 'NV.SRV.TOTL.ZS' OR
-      indicator_code = 'NV.SRV.TOTL.CD' OR
-      indicator_code = 'SL.AGR.EMPL.ZS' OR
-      indicator_code = 'SL.IND.EMPL.ZS' OR
-      indicator_code = 'SL.SRV.EMPL.ZS';</sql>
-    <variables_active>N</variables_active>
-    <attributes/>
-    <GUI>
-      <xloc>48</xloc>
-      <yloc>64</yloc>
-    </GUI>
-  </transform>
-  <transform>
     <name>Database lookup country_id</name>
     <type>DBLookup</type>
     <description/>
@@ -114,7 +80,7 @@ WHERE indicator_code = 'NV.AGR.TOTL.ZS' OR
     <cache>N</cache>
     <cache_load_all>N</cache_load_all>
     <cache_size>0</cache_size>
-    <connection>Wharehouse</connection>
+    <connection>group_29</connection>
     <lookup>
       <eat_row_on_failure>N</eat_row_on_failure>
       <fail_on_multiple>N</fail_on_multiple>
@@ -125,7 +91,7 @@ WHERE indicator_code = 'NV.AGR.TOTL.ZS' OR
         <name2/>
       </key>
       <orderby/>
-      <schema/>
+      <schema>datawarehouseDB</schema>
       <table>DIM_COUNTRY</table>
       <value>
         <default/>
@@ -138,47 +104,6 @@ WHERE indicator_code = 'NV.AGR.TOTL.ZS' OR
     <attributes/>
     <GUI>
       <xloc>368</xloc>
-      <yloc>64</yloc>
-    </GUI>
-  </transform>
-  <transform>
-    <name>Database lookup time_id</name>
-    <type>DBLookup</type>
-    <description/>
-    <distribute>Y</distribute>
-    <custom_distribution/>
-    <copies>1</copies>
-    <partitioning>
-      <method>none</method>
-      <schema_name/>
-    </partitioning>
-    <cache>N</cache>
-    <cache_load_all>N</cache_load_all>
-    <cache_size>0</cache_size>
-    <connection>Wharehouse</connection>
-    <lookup>
-      <eat_row_on_failure>N</eat_row_on_failure>
-      <fail_on_multiple>N</fail_on_multiple>
-      <key>
-        <condition>=</condition>
-        <field>year</field>
-        <name>year</name>
-        <name2/>
-      </key>
-      <orderby/>
-      <schema/>
-      <table>DIM_TIME</table>
-      <value>
-        <default/>
-        <name>time_id</name>
-        <rename/>
-        <trim_type>none</trim_type>
-        <type>Integer</type>
-      </value>
-    </lookup>
-    <attributes/>
-    <GUI>
-      <xloc>560</xloc>
       <yloc>64</yloc>
     </GUI>
   </transform>
@@ -196,7 +121,7 @@ WHERE indicator_code = 'NV.AGR.TOTL.ZS' OR
     <cache>N</cache>
     <cache_load_all>N</cache_load_all>
     <cache_size>0</cache_size>
-    <connection>Wharehouse</connection>
+    <connection>group_29</connection>
     <lookup>
       <eat_row_on_failure>N</eat_row_on_failure>
       <fail_on_multiple>N</fail_on_multiple>
@@ -207,7 +132,7 @@ WHERE indicator_code = 'NV.AGR.TOTL.ZS' OR
         <name2/>
       </key>
       <orderby/>
-      <schema/>
+      <schema>datawarehouseDB</schema>
       <table>DIM_SECTOR</table>
       <value>
         <default/>
@@ -219,13 +144,13 @@ WHERE indicator_code = 'NV.AGR.TOTL.ZS' OR
     </lookup>
     <attributes/>
     <GUI>
-      <xloc>752</xloc>
-      <yloc>64</yloc>
+      <xloc>744</xloc>
+      <yloc>66</yloc>
     </GUI>
   </transform>
   <transform>
-    <name>indicator_code to sector</name>
-    <type>ValueMapper</type>
+    <name>Database lookup time_id</name>
+    <type>DBLookup</type>
     <description/>
     <distribute>Y</distribute>
     <custom_distribution/>
@@ -234,60 +159,196 @@ WHERE indicator_code = 'NV.AGR.TOTL.ZS' OR
       <method>none</method>
       <schema_name/>
     </partitioning>
-    <field_to_use>indicator_code</field_to_use>
-    <fields>
-      <field>
-        <source_value>NV.AGR.TOTL.ZS</source_value>
-        <target_value>Agriculture</target_value>
-      </field>
-      <field>
-        <source_value>NV.AGR.TOTL.CD</source_value>
-        <target_value>Agriculture</target_value>
-      </field>
-      <field>
-        <source_value>NV.IND.TOTL.ZS</source_value>
-        <target_value>Industry</target_value>
-      </field>
-      <field>
-        <source_value>NV.IND.TOTL.CD</source_value>
-        <target_value>Industry</target_value>
-      </field>
-      <field>
-        <source_value>NV.IND.MANF.ZS</source_value>
-        <target_value>Manufacturing</target_value>
-      </field>
-      <field>
-        <source_value>NV.IND.MANF.CD</source_value>
-        <target_value>Manufacturing</target_value>
-      </field>
-      <field>
-        <source_value>NV.SRV.TOTL.ZS</source_value>
-        <target_value>Services</target_value>
-      </field>
-      <field>
-        <source_value>NV.SRV.TOTL.CD</source_value>
-        <target_value>Services</target_value>
-      </field>
-      <field>
-        <source_value>SL.AGR.EMPL.ZS</source_value>
-        <target_value>Agriculture</target_value>
-      </field>
-      <field>
-        <source_value>SL.IND.EMPL.ZS</source_value>
-        <target_value>Industry</target_value>
-      </field>
-      <field>
-        <source_value>SL.SRV.EMPL.ZS</source_value>
-        <target_value>Services</target_value>
-      </field>
-    </fields>
-    <non_match_default/>
-    <target_field>sector_name</target_field>
-    <target_type>String</target_type>
+    <cache>N</cache>
+    <cache_load_all>N</cache_load_all>
+    <cache_size>0</cache_size>
+    <connection>group_29</connection>
+    <lookup>
+      <eat_row_on_failure>N</eat_row_on_failure>
+      <fail_on_multiple>N</fail_on_multiple>
+      <key>
+        <condition>=</condition>
+        <field>year</field>
+        <name>year</name>
+        <name2/>
+      </key>
+      <orderby/>
+      <schema>datawarehouseDB</schema>
+      <table>DIM_TIME</table>
+      <value>
+        <default/>
+        <name>time_id</name>
+        <rename/>
+        <trim_type>none</trim_type>
+        <type>Integer</type>
+      </value>
+    </lookup>
     <attributes/>
     <GUI>
-      <xloc>176</xloc>
+      <xloc>560</xloc>
       <yloc>64</yloc>
+    </GUI>
+  </transform>
+  <transform>
+    <name>Insert / update</name>
+    <type>InsertUpdate</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <commit>100</commit>
+    <connection>group_29</connection>
+    <lookup>
+      <key>
+        <condition>=</condition>
+        <field>country_id</field>
+        <name>country_id</name>
+        <name2/>
+      </key>
+      <key>
+        <condition>=</condition>
+        <field>time_id</field>
+        <name>time_id</name>
+        <name2/>
+      </key>
+      <key>
+        <condition>=</condition>
+        <field>sector_id</field>
+        <name>sector_id</name>
+        <name2/>
+      </key>
+      <schema>datawarehouseDB</schema>
+      <table>FACT_SECTOR</table>
+      <value>
+        <name>time_id</name>
+        <rename>time_id</rename>
+        <update>Y</update>
+      </value>
+      <value>
+        <name>country_id</name>
+        <rename>country_id</rename>
+        <update>Y</update>
+      </value>
+      <value>
+        <name>sector_id</name>
+        <rename>sector_id</rename>
+        <update>Y</update>
+      </value>
+      <value>
+        <name>value_added_pct_gdp</name>
+        <rename>value_added_pct_gdp</rename>
+        <update>Y</update>
+      </value>
+      <value>
+        <name>value_added_usd</name>
+        <rename>value_added_usd</rename>
+        <update>Y</update>
+      </value>
+      <value>
+        <name>employment_pct</name>
+        <rename>employment_pct</rename>
+        <update>Y</update>
+      </value>
+    </lookup>
+    <update_bypassed>N</update_bypassed>
+    <attributes/>
+    <GUI>
+      <xloc>57</xloc>
+      <yloc>145</yloc>
+    </GUI>
+  </transform>
+  <transform>
+    <name>Row denormaliser</name>
+    <type>Denormaliser</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <fields>
+      <field>
+        <field_name>value</field_name>
+        <key_value>value_added_pct_gdp</key_value>
+        <target_aggregation_type>-</target_aggregation_type>
+        <target_length>-1</target_length>
+        <target_name>value_added_pct_gdp</target_name>
+        <target_precision>-1</target_precision>
+        <target_type>String</target_type>
+      </field>
+      <field>
+        <field_name>value</field_name>
+        <key_value>value_added_usd</key_value>
+        <target_aggregation_type>-</target_aggregation_type>
+        <target_length>-1</target_length>
+        <target_name>value_added_usd</target_name>
+        <target_precision>-1</target_precision>
+        <target_type>String</target_type>
+      </field>
+      <field>
+        <field_name>value</field_name>
+        <key_value>employment_pct</key_value>
+        <target_aggregation_type>-</target_aggregation_type>
+        <target_length>-1</target_length>
+        <target_name>employment_pct</target_name>
+        <target_precision>-1</target_precision>
+        <target_type>String</target_type>
+      </field>
+    </fields>
+    <group>
+      <field>
+        <name>country_id</name>
+      </field>
+      <field>
+        <name>time_id</name>
+      </field>
+      <field>
+        <name>sector_id</name>
+      </field>
+    </group>
+    <key_field>measure</key_field>
+    <attributes/>
+    <GUI>
+      <xloc>369</xloc>
+      <yloc>146</yloc>
+    </GUI>
+  </transform>
+  <transform>
+    <name>Select values</name>
+    <type>SelectValues</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <fields>
+      <remove>
+        <name>country_name</name>
+      </remove>
+      <remove>
+        <name>year</name>
+      </remove>
+      <remove>
+        <name>indicator_code</name>
+      </remove>
+      <remove>
+        <name>sector_name</name>
+      </remove>
+      <select_unspecified>N</select_unspecified>
+    </fields>
+    <attributes/>
+    <GUI>
+      <xloc>189</xloc>
+      <yloc>146</yloc>
     </GUI>
   </transform>
   <transform>
@@ -302,7 +363,6 @@ WHERE indicator_code = 'NV.AGR.TOTL.ZS' OR
       <schema_name/>
     </partitioning>
     <compress>N</compress>
-    <compress_variables/>
     <directory>${java.io.tmpdir}</directory>
     <fields>
       <field>
@@ -330,19 +390,18 @@ WHERE indicator_code = 'NV.AGR.TOTL.ZS' OR
         <presorted>N</presorted>
       </field>
     </fields>
-    <free_memory/>
     <sort_prefix>out</sort_prefix>
     <sort_size>1000000</sort_size>
     <unique_rows>N</unique_rows>
     <attributes/>
     <GUI>
-      <xloc>896</xloc>
-      <yloc>64</yloc>
+      <xloc>744</xloc>
+      <yloc>148</yloc>
     </GUI>
   </transform>
   <transform>
-    <name>Row denormaliser</name>
-    <type>Denormaliser</type>
+    <name>Table input</name>
+    <type>TableInput</type>
     <description/>
     <distribute>Y</distribute>
     <custom_distribution/>
@@ -351,66 +410,27 @@ WHERE indicator_code = 'NV.AGR.TOTL.ZS' OR
       <method>none</method>
       <schema_name/>
     </partitioning>
-    <fields>
-      <field>
-        <field_name>value</field_name>
-        <key_value>value_added_pct_gdp</key_value>
-        <target_aggregation_type>-</target_aggregation_type>
-        <target_currency_symbol/>
-        <target_decimal_symbol/>
-        <target_format/>
-        <target_grouping_symbol/>
-        <target_length>-1</target_length>
-        <target_name>value_added_pct_gdp</target_name>
-        <target_null_string/>
-        <target_precision>-1</target_precision>
-        <target_type>String</target_type>
-      </field>
-      <field>
-        <field_name>value</field_name>
-        <key_value>value_added_usd</key_value>
-        <target_aggregation_type>-</target_aggregation_type>
-        <target_currency_symbol/>
-        <target_decimal_symbol/>
-        <target_format/>
-        <target_grouping_symbol/>
-        <target_length>-1</target_length>
-        <target_name>value_added_usd</target_name>
-        <target_null_string/>
-        <target_precision>-1</target_precision>
-        <target_type>String</target_type>
-      </field>
-      <field>
-        <field_name>value</field_name>
-        <key_value>employment_pct</key_value>
-        <target_aggregation_type>-</target_aggregation_type>
-        <target_currency_symbol/>
-        <target_decimal_symbol/>
-        <target_format/>
-        <target_grouping_symbol/>
-        <target_length>-1</target_length>
-        <target_name>employment_pct</target_name>
-        <target_null_string/>
-        <target_precision>-1</target_precision>
-        <target_type>String</target_type>
-      </field>
-    </fields>
-    <group>
-      <field>
-        <name>country_id</name>
-      </field>
-      <field>
-        <name>time_id</name>
-      </field>
-      <field>
-        <name>sector_id</name>
-      </field>
-    </group>
-    <key_field>measure</key_field>
+    <connection>group_29</connection>
+    <execute_each_row>N</execute_each_row>
+    <limit>0</limit>
+    <sql>SELECT country_name, year, indicator_code, value
+FROM stagingDB.WDI_INDICATORS
+WHERE indicator_code = 'NV.AGR.TOTL.ZS' OR
+	  indicator_code = 'NV.AGR.TOTL.CD' OR
+      indicator_code = 'NV.IND.TOTL.ZS' OR
+      indicator_code = 'NV.IND.TOTL.CD' OR
+      indicator_code = 'NV.IND.MANF.ZS' OR
+      indicator_code = 'NV.IND.MANF.CD' OR
+      indicator_code = 'NV.SRV.TOTL.ZS' OR
+      indicator_code = 'NV.SRV.TOTL.CD' OR
+      indicator_code = 'SL.AGR.EMPL.ZS' OR
+      indicator_code = 'SL.IND.EMPL.ZS' OR
+      indicator_code = 'SL.SRV.EMPL.ZS';</sql>
+    <variables_active>N</variables_active>
     <attributes/>
     <GUI>
-      <xloc>1040</xloc>
-      <yloc>192</yloc>
+      <xloc>48</xloc>
+      <yloc>64</yloc>
     </GUI>
   </transform>
   <transform>
@@ -471,18 +491,16 @@ WHERE indicator_code = 'NV.AGR.TOTL.ZS' OR
         <target_value>employment_pct</target_value>
       </field>
     </fields>
-    <non_match_default/>
     <target_field>measure</target_field>
-    <target_type/>
     <attributes/>
     <GUI>
-      <xloc>1040</xloc>
-      <yloc>64</yloc>
+      <xloc>558</xloc>
+      <yloc>146</yloc>
     </GUI>
   </transform>
   <transform>
-    <name>Select values</name>
-    <type>SelectValues</type>
+    <name>indicator_code to sector</name>
+    <type>ValueMapper</type>
     <description/>
     <distribute>Y</distribute>
     <custom_distribution/>
@@ -491,97 +509,59 @@ WHERE indicator_code = 'NV.AGR.TOTL.ZS' OR
       <method>none</method>
       <schema_name/>
     </partitioning>
+    <field_to_use>indicator_code</field_to_use>
     <fields>
-      <remove>
-        <name>country_name</name>
-      </remove>
-      <remove>
-        <name>year</name>
-      </remove>
-      <remove>
-        <name>indicator_code</name>
-      </remove>
-      <remove>
-        <name>sector_name</name>
-      </remove>
-      <select_unspecified>N</select_unspecified>
+      <field>
+        <source_value>NV.AGR.TOTL.ZS</source_value>
+        <target_value>Agriculture</target_value>
+      </field>
+      <field>
+        <source_value>NV.AGR.TOTL.CD</source_value>
+        <target_value>Agriculture</target_value>
+      </field>
+      <field>
+        <source_value>NV.IND.TOTL.ZS</source_value>
+        <target_value>Industry</target_value>
+      </field>
+      <field>
+        <source_value>NV.IND.TOTL.CD</source_value>
+        <target_value>Industry</target_value>
+      </field>
+      <field>
+        <source_value>NV.IND.MANF.ZS</source_value>
+        <target_value>Manufacturing</target_value>
+      </field>
+      <field>
+        <source_value>NV.IND.MANF.CD</source_value>
+        <target_value>Manufacturing</target_value>
+      </field>
+      <field>
+        <source_value>NV.SRV.TOTL.ZS</source_value>
+        <target_value>Services</target_value>
+      </field>
+      <field>
+        <source_value>NV.SRV.TOTL.CD</source_value>
+        <target_value>Services</target_value>
+      </field>
+      <field>
+        <source_value>SL.AGR.EMPL.ZS</source_value>
+        <target_value>Agriculture</target_value>
+      </field>
+      <field>
+        <source_value>SL.IND.EMPL.ZS</source_value>
+        <target_value>Industry</target_value>
+      </field>
+      <field>
+        <source_value>SL.SRV.EMPL.ZS</source_value>
+        <target_value>Services</target_value>
+      </field>
     </fields>
+    <target_field>sector_name</target_field>
+    <target_type>String</target_type>
     <attributes/>
     <GUI>
-      <xloc>1040</xloc>
-      <yloc>336</yloc>
-    </GUI>
-  </transform>
-  <transform>
-    <name>Insert / update</name>
-    <type>InsertUpdate</type>
-    <description/>
-    <distribute>Y</distribute>
-    <custom_distribution/>
-    <copies>1</copies>
-    <partitioning>
-      <method>none</method>
-      <schema_name/>
-    </partitioning>
-    <commit>100</commit>
-    <connection>Wharehouse</connection>
-    <lookup>
-      <key>
-        <condition>=</condition>
-        <field>country_id</field>
-        <name>country_id</name>
-        <name2/>
-      </key>
-      <key>
-        <condition>=</condition>
-        <field>time_id</field>
-        <name>time_id</name>
-        <name2/>
-      </key>
-      <key>
-        <condition>=</condition>
-        <field>sector_id</field>
-        <name>sector_id</name>
-        <name2/>
-      </key>
-      <schema/>
-      <table>FACT_SECTOR</table>
-      <value>
-        <name>time_id</name>
-        <rename>time_id</rename>
-        <update>Y</update>
-      </value>
-      <value>
-        <name>country_id</name>
-        <rename>country_id</rename>
-        <update>Y</update>
-      </value>
-      <value>
-        <name>sector_id</name>
-        <rename>sector_id</rename>
-        <update>Y</update>
-      </value>
-      <value>
-        <name>value_added_pct_gdp</name>
-        <rename>value_added_pct_gdp</rename>
-        <update>Y</update>
-      </value>
-      <value>
-        <name>value_added_usd</name>
-        <rename>value_added_usd</rename>
-        <update>Y</update>
-      </value>
-      <value>
-        <name>employment_pct</name>
-        <rename>employment_pct</rename>
-        <update>Y</update>
-      </value>
-    </lookup>
-    <update_bypassed>N</update_bypassed>
-    <attributes/>
-    <GUI>
-      <xloc>1040</xloc>
-      <yloc>496</yloc>
+      <xloc>176</xloc>
+      <yloc>64</yloc>
     </GUI>
   </transform>
   <transform_error_handling>

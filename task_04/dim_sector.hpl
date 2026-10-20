@@ -90,7 +90,7 @@
     </partitioning>
     <cache_size>9999</cache_size>
     <commit>100</commit>
-    <connection>Staging</connection>
+    <connection>group_29</connection>
     <crc>N</crc>
     <crcfield>hashcode</crcfield>
     <fields>
