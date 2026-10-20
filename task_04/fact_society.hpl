@@ -52,34 +52,6 @@
     </hop>
   </order>
   <transform>
-    <name>Table input</name>
-    <type>TableInput</type>
-    <description/>
-    <distribute>Y</distribute>
-    <custom_distribution/>
-    <copies>1</copies>
-    <partitioning>
-      <method>none</method>
-      <schema_name/>
-    </partitioning>
-    <connection>Staging</connection>
-    <execute_each_row>N</execute_each_row>
-    <limit>0</limit>
-    <sql>SELECT * FROM MADDISON_INDICATORS
-WHERE indicator_code = 'pop'
-UNION
-SELECT * FROM WDI_INDICATORS
-WHERE indicator_code = 'NY.GNP.PCAP.CD' OR
-      indicator_code = 'SP.DYN.LE00.IN' OR
-      indicator_code = 'SP.URB.TOTL.IN.ZS';</sql>
-    <variables_active>N</variables_active>
-    <attributes/>
-    <GUI>
-      <xloc>48</xloc>
-      <yloc>80</yloc>
-    </GUI>
-  </transform>
-  <transform>
     <name>Database lookup country_id</name>
     <type>DBLookup</type>
     <description/>
@@ -93,7 +65,7 @@ WHERE indicator_code = 'NY.GNP.PCAP.CD' OR
     <cache>N</cache>
     <cache_load_all>N</cache_load_all>
     <cache_size>0</cache_size>
-    <connection>Wharehouse</connection>
+    <connection>group_29</connection>
     <lookup>
       <eat_row_on_failure>N</eat_row_on_failure>
       <fail_on_multiple>N</fail_on_multiple>
@@ -104,7 +76,7 @@ WHERE indicator_code = 'NY.GNP.PCAP.CD' OR
         <name2/>
       </key>
       <orderby/>
-      <schema/>
+      <schema>datawarehouseDB</schema>
       <table>DIM_COUNTRY</table>
       <value>
         <default/>
@@ -134,7 +106,7 @@ WHERE indicator_code = 'NY.GNP.PCAP.CD' OR
     <cache>N</cache>
     <cache_load_all>N</cache_load_all>
     <cache_size>0</cache_size>
-    <connection>Wharehouse</connection>
+    <connection>group_29</connection>
     <lookup>
       <eat_row_on_failure>N</eat_row_on_failure>
       <fail_on_multiple>N</fail_on_multiple>
@@ -145,7 +117,7 @@ WHERE indicator_code = 'NY.GNP.PCAP.CD' OR
         <name2/>
       </key>
       <orderby/>
-      <schema/>
+      <schema>datawarehouseDB</schema>
       <table>DIM_TIME</table>
       <value>
         <default/>
@@ -162,8 +134,8 @@ WHERE indicator_code = 'NY.GNP.PCAP.CD' OR
     </GUI>
   </transform>
   <transform>
-    <name>Sort rows</name>
-    <type>SortRows</type>
+    <name>Insert / update</name>
+    <type>InsertUpdate</type>
     <description/>
     <distribute>Y</distribute>
     <custom_distribution/>
@@ -172,34 +144,58 @@ WHERE indicator_code = 'NY.GNP.PCAP.CD' OR
       <method>none</method>
       <schema_name/>
     </partitioning>
-    <compress>N</compress>
-    <compress_variables/>
-    <directory>${java.io.tmpdir}</directory>
-    <fields>
-      <field>
-        <ascending>Y</ascending>
-        <case_sensitive>N</case_sensitive>
-        <collator_enabled>N</collator_enabled>
-        <collator_strength>0</collator_strength>
+    <commit>100</commit>
+    <connection>group_29</connection>
+    <lookup>
+      <key>
+        <condition>=</condition>
+        <field>country_id</field>
         <name>country_id</name>
-        <presorted>N</presorted>
-      </field>
-      <field>
-        <ascending>Y</ascending>
-        <case_sensitive>N</case_sensitive>
-        <collator_enabled>N</collator_enabled>
-        <collator_strength>0</collator_strength>
+        <name2/>
+      </key>
+      <key>
+        <condition>=</condition>
+        <field>time_id</field>
         <name>time_id</name>
-        <presorted>N</presorted>
-      </field>
-    </fields>
-    <free_memory/>
-    <sort_prefix>out</sort_prefix>
-    <sort_size>1000000</sort_size>
-    <unique_rows>N</unique_rows>
+        <name2/>
+      </key>
+      <schema>datawarehouseDB</schema>
+      <table>FACT_SOCIETY</table>
+      <value>
+        <name>country_id</name>
+        <rename>country_id</rename>
+        <update>Y</update>
+      </value>
+      <value>
+        <name>time_id</name>
+        <rename>time_id</rename>
+        <update>Y</update>
+      </value>
+      <value>
+        <name>population</name>
+        <rename>population</rename>
+        <update>Y</update>
+      </value>
+      <value>
+        <name>gni_per_capita</name>
+        <rename>gni_per_capita</rename>
+        <update>Y</update>
+      </value>
+      <value>
+        <name>life_expectancy</name>
+        <rename>life_expectancy</rename>
+        <update>Y</update>
+      </value>
+      <value>
+        <name>urban_pop_pct</name>
+        <rename>urban_pop_pct</rename>
+        <update>Y</update>
+      </value>
+    </lookup>
+    <update_bypassed>N</update_bypassed>
     <attributes/>
     <GUI>
-      <xloc>560</xloc>
+      <xloc>944</xloc>
       <yloc>80</yloc>
     </GUI>
   </transform>
@@ -219,13 +215,8 @@ WHERE indicator_code = 'NY.GNP.PCAP.CD' OR
         <field_name>value</field_name>
         <key_value>pop</key_value>
         <target_aggregation_type>-</target_aggregation_type>
-        <target_currency_symbol/>
-        <target_decimal_symbol/>
-        <target_format/>
-        <target_grouping_symbol/>
         <target_length>-1</target_length>
         <target_name>population</target_name>
-        <target_null_string/>
         <target_precision>-1</target_precision>
         <target_type>String</target_type>
       </field>
@@ -233,13 +224,8 @@ WHERE indicator_code = 'NY.GNP.PCAP.CD' OR
         <field_name>value</field_name>
         <key_value>NY.GNP.PCAP.CD</key_value>
         <target_aggregation_type>-</target_aggregation_type>
-        <target_currency_symbol/>
-        <target_decimal_symbol/>
-        <target_format/>
-        <target_grouping_symbol/>
         <target_length>-1</target_length>
         <target_name>gni_per_capita</target_name>
-        <target_null_string/>
         <target_precision>-1</target_precision>
         <target_type>String</target_type>
       </field>
@@ -247,13 +233,8 @@ WHERE indicator_code = 'NY.GNP.PCAP.CD' OR
         <field_name>value</field_name>
         <key_value>SP.DYN.LE00.IN</key_value>
         <target_aggregation_type>-</target_aggregation_type>
-        <target_currency_symbol/>
-        <target_decimal_symbol/>
-        <target_format/>
-        <target_grouping_symbol/>
         <target_length>-1</target_length>
         <target_name>life_expectancy</target_name>
-        <target_null_string/>
         <target_precision>-1</target_precision>
         <target_type>String</target_type>
       </field>
@@ -261,13 +242,8 @@ WHERE indicator_code = 'NY.GNP.PCAP.CD' OR
         <field_name>value</field_name>
         <key_value>SP.URB.TOTL.IN.ZS</key_value>
         <target_aggregation_type>-</target_aggregation_type>
-        <target_currency_symbol/>
-        <target_decimal_symbol/>
-        <target_format/>
-        <target_grouping_symbol/>
         <target_length>-1</target_length>
         <target_name>urban_pop_pct</target_name>
-        <target_null_string/>
         <target_precision>-1</target_precision>
         <target_type>String</target_type>
       </field>
@@ -320,8 +296,8 @@ WHERE indicator_code = 'NY.GNP.PCAP.CD' OR
     </GUI>
   </transform>
   <transform>
-    <name>Insert / update</name>
-    <type>InsertUpdate</type>
+    <name>Sort rows</name>
+    <type>SortRows</type>
     <description/>
     <distribute>Y</distribute>
     <custom_distribution/>
@@ -330,58 +306,60 @@ WHERE indicator_code = 'NY.GNP.PCAP.CD' OR
       <method>none</method>
       <schema_name/>
     </partitioning>
-    <commit>100</commit>
-    <connection>Wharehouse</connection>
-    <lookup>
-      <key>
-        <condition>=</condition>
-        <field>country_id</field>
+    <compress>N</compress>
+    <directory>${java.io.tmpdir}</directory>
+    <fields>
+      <field>
+        <ascending>Y</ascending>
+        <case_sensitive>N</case_sensitive>
+        <collator_enabled>N</collator_enabled>
+        <collator_strength>0</collator_strength>
         <name>country_id</name>
-        <name2/>
-      </key>
-      <key>
-        <condition>=</condition>
-        <field>time_id</field>
+        <presorted>N</presorted>
+      </field>
+      <field>
+        <ascending>Y</ascending>
+        <case_sensitive>N</case_sensitive>
+        <collator_enabled>N</collator_enabled>
+        <collator_strength>0</collator_strength>
         <name>time_id</name>
-        <name2/>
-      </key>
-      <schema/>
-      <table>FACT_SOCIETY</table>
-      <value>
-        <name>country_id</name>
-        <rename>country_id</rename>
-        <update>Y</update>
-      </value>
-      <value>
-        <name>time_id</name>
-        <rename>time_id</rename>
-        <update>Y</update>
-      </value>
-      <value>
-        <name>population</name>
-        <rename>population</rename>
-        <update>Y</update>
-      </value>
-      <value>
-        <name>gni_per_capita</name>
-        <rename>gni_per_capita</rename>
-        <update>Y</update>
-      </value>
-      <value>
-        <name>life_expectancy</name>
-        <rename>life_expectancy</rename>
-        <update>Y</update>
-      </value>
-      <value>
-        <name>urban_pop_pct</name>
-        <rename>urban_pop_pct</rename>
-        <update>Y</update>
-      </value>
-    </lookup>
-    <update_bypassed>N</update_bypassed>
+        <presorted>N</presorted>
+      </field>
+    </fields>
+    <sort_prefix>out</sort_prefix>
+    <sort_size>1000000</sort_size>
+    <unique_rows>N</unique_rows>
     <attributes/>
     <GUI>
-      <xloc>944</xloc>
+      <xloc>560</xloc>
+      <yloc>80</yloc>
+    </GUI>
+  </transform>
+  <transform>
+    <name>Table input</name>
+    <type>TableInput</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <connection>group_29</connection>
+    <execute_each_row>N</execute_each_row>
+    <limit>0</limit>
+    <sql>SELECT * FROM stagingDB.MADDISON_INDICATORS
+WHERE indicator_code = 'pop'
+UNION
+SELECT * FROM stagingDB.WDI_INDICATORS
+WHERE indicator_code = 'NY.GNP.PCAP.CD' OR
+      indicator_code = 'SP.DYN.LE00.IN' OR
+      indicator_code = 'SP.URB.TOTL.IN.ZS';</sql>
+    <variables_active>N</variables_active>
+    <attributes/>
+    <GUI>
+      <xloc>48</xloc>
       <yloc>80</yloc>
     </GUI>
   </transform>

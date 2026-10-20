@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <pipeline>
   <info>
-    <name>dim_time2</name>
+    <name>dim_time</name>
     <name_sync_with_filename>Y</name_sync_with_filename>
     <description/>
     <extended_description/>
@@ -104,6 +104,48 @@
     </GUI>
   </transform>
   <transform>
+    <name>DIM_TIME lookup/update</name>
+    <type>CombinationLookup</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <cache_size>9999</cache_size>
+    <commit>100</commit>
+    <connection>group_29</connection>
+    <crc>N</crc>
+    <crcfield>hashcode</crcfield>
+    <fields>
+      <key>
+        <lookup>year</lookup>
+        <name>year</name>
+      </key>
+      <key>
+        <lookup>decade</lookup>
+        <name>decade</name>
+      </key>
+      <return>
+        <creation_method>tablemax</creation_method>
+        <last_update_field/>
+        <name>time_id</name>
+        <use_autoinc>N</use_autoinc>
+      </return>
+    </fields>
+    <preloadCache>N</preloadCache>
+    <replace>N</replace>
+    <schema>datawarehouseDB</schema>
+    <table>DIM_TIME</table>
+    <attributes/>
+    <GUI>
+      <xloc>975</xloc>
+      <yloc>140</yloc>
+    </GUI>
+  </transform>
+  <transform>
     <name>Generate rows</name>
     <type>RowGenerator</type>
     <description/>
@@ -118,7 +160,6 @@
       <field>
         <length>-1</length>
         <name>tmp</name>
-        <nullif>10</nullif>
         <precision>-1</precision>
         <set_empty_string>N</set_empty_string>
         <type>Integer</type>
@@ -220,7 +261,7 @@
       <method>none</method>
       <schema_name/>
     </partitioning>
-    <connection>Staging</connection>
+    <connection>group_29</connection>
     <execute_each_row>N</execute_each_row>
     <limit>0</limit>
     <sql>SELECT MIN(year) AS min_year, MAX(year) AS max_year
@@ -237,48 +278,6 @@ FROM (SELECT year
     <GUI>
       <xloc>389</xloc>
       <yloc>16</yloc>
-    </GUI>
-  </transform>
-  <transform>
-    <name>DIM_TIME lookup/update</name>
-    <type>CombinationLookup</type>
-    <description/>
-    <distribute>Y</distribute>
-    <custom_distribution/>
-    <copies>1</copies>
-    <partitioning>
-      <method>none</method>
-      <schema_name/>
-    </partitioning>
-    <cache_size>9999</cache_size>
-    <commit>100</commit>
-    <connection>Staging</connection>
-    <crc>N</crc>
-    <crcfield>hashcode</crcfield>
-    <fields>
-      <key>
-        <lookup>year</lookup>
-        <name>year</name>
-      </key>
-      <key>
-        <lookup>decade</lookup>
-        <name>decade</name>
-      </key>
-      <return>
-        <creation_method>tablemax</creation_method>
-        <last_update_field/>
-        <name>time_id</name>
-        <use_autoinc>N</use_autoinc>
-      </return>
-    </fields>
-    <preloadCache>N</preloadCache>
-    <replace>N</replace>
-    <schema>datawarehouseDB</schema>
-    <table>DIM_TIME</table>
-    <attributes/>
-    <GUI>
-      <xloc>975</xloc>
-      <yloc>140</yloc>
     </GUI>
   </transform>
   <transform_error_handling>

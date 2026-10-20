@@ -52,7 +52,7 @@
     <auto_update_table_structure>N</auto_update_table_structure>
     <change_column_types>N</change_column_types>
     <commit>1000</commit>
-    <connection>Staging</connection>
+    <connection>group_29</connection>
     <drop_columns>N</drop_columns>
     <fields>
 </fields>
@@ -60,11 +60,14 @@
     <only_when_have_rows>N</only_when_have_rows>
     <partitioning_daily>N</partitioning_daily>
     <partitioning_enabled>N</partitioning_enabled>
+    <partitioning_field/>
     <partitioning_monthly>Y</partitioning_monthly>
+    <return_field/>
     <return_keys>N</return_keys>
     <schema>stagingDB</schema>
     <specify_fields>N</specify_fields>
     <table>HISTORICAL_EVENTS</table>
+    <tablename_field/>
     <tablename_in_field>N</tablename_in_field>
     <tablename_in_table>Y</tablename_in_table>
     <truncate>Y</truncate>
@@ -91,7 +94,7 @@
     <auto_update_table_structure>N</auto_update_table_structure>
     <change_column_types>N</change_column_types>
     <commit>1000</commit>
-    <connection>Staging</connection>
+    <connection>group_29</connection>
     <drop_columns>N</drop_columns>
     <fields>
 </fields>
@@ -99,11 +102,14 @@
     <only_when_have_rows>N</only_when_have_rows>
     <partitioning_daily>N</partitioning_daily>
     <partitioning_enabled>N</partitioning_enabled>
+    <partitioning_field/>
     <partitioning_monthly>Y</partitioning_monthly>
+    <return_field/>
     <return_keys>N</return_keys>
     <schema>stagingDB</schema>
     <specify_fields>N</specify_fields>
     <table>MADDISON_INDICATORS</table>
+    <tablename_field/>
     <tablename_in_field>N</tablename_in_field>
     <tablename_in_table>Y</tablename_in_table>
     <truncate>Y</truncate>
@@ -130,7 +136,7 @@
     <auto_update_table_structure>N</auto_update_table_structure>
     <change_column_types>N</change_column_types>
     <commit>1000</commit>
-    <connection>Staging</connection>
+    <connection>group_29</connection>
     <drop_columns>N</drop_columns>
     <fields>
 </fields>
@@ -138,11 +144,14 @@
     <only_when_have_rows>N</only_when_have_rows>
     <partitioning_daily>N</partitioning_daily>
     <partitioning_enabled>N</partitioning_enabled>
+    <partitioning_field/>
     <partitioning_monthly>Y</partitioning_monthly>
+    <return_field/>
     <return_keys>N</return_keys>
     <schema>stagingDB</schema>
     <specify_fields>N</specify_fields>
     <table>WDI_INDICATORS</table>
+    <tablename_field/>
     <tablename_in_field>N</tablename_in_field>
     <tablename_in_table>Y</tablename_in_table>
     <truncate>Y</truncate>

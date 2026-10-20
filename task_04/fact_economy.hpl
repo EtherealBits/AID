@@ -52,8 +52,8 @@
     </hop>
   </order>
   <transform>
-    <name>Table input</name>
-    <type>TableInput</type>
+    <name>Database lookup 2 time_id</name>
+    <type>DBLookup</type>
     <description/>
     <distribute>Y</distribute>
     <custom_distribution/>
@@ -62,23 +62,33 @@
       <method>none</method>
       <schema_name/>
     </partitioning>
-    <connection>Staging</connection>
-    <execute_each_row>N</execute_each_row>
-    <limit>0</limit>
-    <sql>SELECT * FROM
-(SELECT * FROM MADDISON_INDICATORS
-WHERE indicator_code = 'gdp' OR 
-      indicator_code = 'gdppc'
-UNION
-SELECT * FROM WDI_INDICATORS
-WHERE indicator_code = 'NY.GDP.MKTP.KD.ZG' OR
-	  indicator_code = 'NE.EXP.GNFS.ZS' OR
-      indicator_code = 'NE.IMP.GNFS.ZS') AS tmp
-ORDER BY country_name, indicator_code;</sql>
-    <variables_active>N</variables_active>
+    <cache>N</cache>
+    <cache_load_all>N</cache_load_all>
+    <cache_size>0</cache_size>
+    <connection>group_29</connection>
+    <lookup>
+      <eat_row_on_failure>N</eat_row_on_failure>
+      <fail_on_multiple>N</fail_on_multiple>
+      <key>
+        <condition>=</condition>
+        <field>year</field>
+        <name>year</name>
+        <name2/>
+      </key>
+      <orderby/>
+      <schema>datawarehouseDB</schema>
+      <table>DIM_TIME</table>
+      <value>
+        <default/>
+        <name>time_id</name>
+        <rename/>
+        <trim_type>none</trim_type>
+        <type>Integer</type>
+      </value>
+    </lookup>
     <attributes/>
     <GUI>
-      <xloc>64</xloc>
+      <xloc>416</xloc>
       <yloc>80</yloc>
     </GUI>
   </transform>
@@ -96,7 +106,7 @@ ORDER BY country_name, indicator_code;</sql>
     <cache>N</cache>
     <cache_load_all>N</cache_load_all>
     <cache_size>0</cache_size>
-    <connection>Wharehouse</connection>
+    <connection>group_29</connection>
     <lookup>
       <eat_row_on_failure>N</eat_row_on_failure>
       <fail_on_multiple>N</fail_on_multiple>
@@ -107,7 +117,7 @@ ORDER BY country_name, indicator_code;</sql>
         <name2/>
       </key>
       <orderby/>
-      <schema/>
+      <schema>datawarehouseDB</schema>
       <table>DIM_COUNTRY</table>
       <value>
         <default/>
@@ -124,219 +134,6 @@ ORDER BY country_name, indicator_code;</sql>
     </GUI>
   </transform>
   <transform>
-    <name>Database lookup 2 time_id</name>
-    <type>DBLookup</type>
-    <description/>
-    <distribute>Y</distribute>
-    <custom_distribution/>
-    <copies>1</copies>
-    <partitioning>
-      <method>none</method>
-      <schema_name/>
-    </partitioning>
-    <cache>N</cache>
-    <cache_load_all>N</cache_load_all>
-    <cache_size>0</cache_size>
-    <connection>Wharehouse</connection>
-    <lookup>
-      <eat_row_on_failure>N</eat_row_on_failure>
-      <fail_on_multiple>N</fail_on_multiple>
-      <key>
-        <condition>=</condition>
-        <field>year</field>
-        <name>year</name>
-        <name2/>
-      </key>
-      <orderby/>
-      <schema/>
-      <table>DIM_TIME</table>
-      <value>
-        <default/>
-        <name>time_id</name>
-        <rename/>
-        <trim_type>none</trim_type>
-        <type>Integer</type>
-      </value>
-    </lookup>
-    <attributes/>
-    <GUI>
-      <xloc>416</xloc>
-      <yloc>80</yloc>
-    </GUI>
-  </transform>
-  <transform>
-    <name>Row denormaliser</name>
-    <type>Denormaliser</type>
-    <description/>
-    <distribute>Y</distribute>
-    <custom_distribution/>
-    <copies>1</copies>
-    <partitioning>
-      <method>none</method>
-      <schema_name/>
-    </partitioning>
-    <fields>
-      <field>
-        <field_name>value</field_name>
-        <key_value>gdp</key_value>
-        <target_aggregation_type>-</target_aggregation_type>
-        <target_currency_symbol/>
-        <target_decimal_symbol/>
-        <target_format/>
-        <target_grouping_symbol/>
-        <target_length>-1</target_length>
-        <target_name>gdp</target_name>
-        <target_null_string/>
-        <target_precision>-1</target_precision>
-        <target_type>String</target_type>
-      </field>
-      <field>
-        <field_name>value</field_name>
-        <key_value>gdppc</key_value>
-        <target_aggregation_type>-</target_aggregation_type>
-        <target_currency_symbol/>
-        <target_decimal_symbol/>
-        <target_format/>
-        <target_grouping_symbol/>
-        <target_length>-1</target_length>
-        <target_name>gdp_per_capita</target_name>
-        <target_null_string/>
-        <target_precision>-1</target_precision>
-        <target_type>String</target_type>
-      </field>
-      <field>
-        <field_name>value</field_name>
-        <key_value>NY.GDP.MKTP.KD.ZG</key_value>
-        <target_aggregation_type>-</target_aggregation_type>
-        <target_currency_symbol/>
-        <target_decimal_symbol/>
-        <target_format/>
-        <target_grouping_symbol/>
-        <target_length>-1</target_length>
-        <target_name>gdp_growth_pct</target_name>
-        <target_null_string/>
-        <target_precision>-1</target_precision>
-        <target_type>String</target_type>
-      </field>
-      <field>
-        <field_name>value</field_name>
-        <key_value>NE.EXP.GNFS.ZS</key_value>
-        <target_aggregation_type>-</target_aggregation_type>
-        <target_currency_symbol/>
-        <target_decimal_symbol/>
-        <target_format/>
-        <target_grouping_symbol/>
-        <target_length>-1</target_length>
-        <target_name>exports_pct_gdp</target_name>
-        <target_null_string/>
-        <target_precision>-1</target_precision>
-        <target_type>String</target_type>
-      </field>
-      <field>
-        <field_name>value</field_name>
-        <key_value>NE.IMP.GNFS.ZS</key_value>
-        <target_aggregation_type>-</target_aggregation_type>
-        <target_currency_symbol/>
-        <target_decimal_symbol/>
-        <target_format/>
-        <target_grouping_symbol/>
-        <target_length>-1</target_length>
-        <target_name>imports_pct_gdp</target_name>
-        <target_null_string/>
-        <target_precision>-1</target_precision>
-        <target_type>String</target_type>
-      </field>
-    </fields>
-    <group>
-      <field>
-        <name>country_id</name>
-      </field>
-      <field>
-        <name>time_id</name>
-      </field>
-    </group>
-    <key_field>indicator_code</key_field>
-    <attributes/>
-    <GUI>
-      <xloc>736</xloc>
-      <yloc>80</yloc>
-    </GUI>
-  </transform>
-  <transform>
-    <name>Sort rows</name>
-    <type>SortRows</type>
-    <description/>
-    <distribute>Y</distribute>
-    <custom_distribution/>
-    <copies>1</copies>
-    <partitioning>
-      <method>none</method>
-      <schema_name/>
-    </partitioning>
-    <compress>N</compress>
-    <compress_variables/>
-    <directory>${java.io.tmpdir}</directory>
-    <fields>
-      <field>
-        <ascending>Y</ascending>
-        <case_sensitive>N</case_sensitive>
-        <collator_enabled>N</collator_enabled>
-        <collator_strength>0</collator_strength>
-        <name>country_id</name>
-        <presorted>N</presorted>
-      </field>
-      <field>
-        <ascending>Y</ascending>
-        <case_sensitive>N</case_sensitive>
-        <collator_enabled>N</collator_enabled>
-        <collator_strength>0</collator_strength>
-        <name>time_id</name>
-        <presorted>N</presorted>
-      </field>
-    </fields>
-    <free_memory/>
-    <sort_prefix>out</sort_prefix>
-    <sort_size>1000000</sort_size>
-    <unique_rows>N</unique_rows>
-    <attributes/>
-    <GUI>
-      <xloc>608</xloc>
-      <yloc>80</yloc>
-    </GUI>
-  </transform>
-  <transform>
-    <name>Select values</name>
-    <type>SelectValues</type>
-    <description/>
-    <distribute>Y</distribute>
-    <custom_distribution/>
-    <copies>1</copies>
-    <partitioning>
-      <method>none</method>
-      <schema_name/>
-    </partitioning>
-    <fields>
-      <remove>
-        <name>iso3</name>
-      </remove>
-      <remove>
-        <name>country_name</name>
-      </remove>
-      <remove>
-        <name>indicator_name</name>
-      </remove>
-      <remove>
-        <name>year</name>
-      </remove>
-      <select_unspecified>N</select_unspecified>
-    </fields>
-    <attributes/>
-    <GUI>
-      <xloc>880</xloc>
-      <yloc>80</yloc>
-    </GUI>
-  </transform>
-  <transform>
     <name>Insert / update</name>
     <type>InsertUpdate</type>
     <description/>
@@ -348,7 +145,7 @@ ORDER BY country_name, indicator_code;</sql>
       <schema_name/>
     </partitioning>
     <commit>100</commit>
-    <connection>Wharehouse</connection>
+    <connection>group_29</connection>
     <lookup>
       <key>
         <condition>=</condition>
@@ -362,7 +159,7 @@ ORDER BY country_name, indicator_code;</sql>
         <name>time_id</name>
         <name2/>
       </key>
-      <schema/>
+      <schema>datawarehouseDB</schema>
       <table>FACT_ECONOMY</table>
       <value>
         <name>country_id</name>
@@ -404,6 +201,182 @@ ORDER BY country_name, indicator_code;</sql>
     <attributes/>
     <GUI>
       <xloc>1008</xloc>
+      <yloc>80</yloc>
+    </GUI>
+  </transform>
+  <transform>
+    <name>Row denormaliser</name>
+    <type>Denormaliser</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <fields>
+      <field>
+        <field_name>value</field_name>
+        <key_value>gdp</key_value>
+        <target_aggregation_type>-</target_aggregation_type>
+        <target_length>-1</target_length>
+        <target_name>gdp</target_name>
+        <target_precision>-1</target_precision>
+        <target_type>String</target_type>
+      </field>
+      <field>
+        <field_name>value</field_name>
+        <key_value>gdppc</key_value>
+        <target_aggregation_type>-</target_aggregation_type>
+        <target_length>-1</target_length>
+        <target_name>gdp_per_capita</target_name>
+        <target_precision>-1</target_precision>
+        <target_type>String</target_type>
+      </field>
+      <field>
+        <field_name>value</field_name>
+        <key_value>NY.GDP.MKTP.KD.ZG</key_value>
+        <target_aggregation_type>-</target_aggregation_type>
+        <target_length>-1</target_length>
+        <target_name>gdp_growth_pct</target_name>
+        <target_precision>-1</target_precision>
+        <target_type>String</target_type>
+      </field>
+      <field>
+        <field_name>value</field_name>
+        <key_value>NE.EXP.GNFS.ZS</key_value>
+        <target_aggregation_type>-</target_aggregation_type>
+        <target_length>-1</target_length>
+        <target_name>exports_pct_gdp</target_name>
+        <target_precision>-1</target_precision>
+        <target_type>String</target_type>
+      </field>
+      <field>
+        <field_name>value</field_name>
+        <key_value>NE.IMP.GNFS.ZS</key_value>
+        <target_aggregation_type>-</target_aggregation_type>
+        <target_length>-1</target_length>
+        <target_name>imports_pct_gdp</target_name>
+        <target_precision>-1</target_precision>
+        <target_type>String</target_type>
+      </field>
+    </fields>
+    <group>
+      <field>
+        <name>country_id</name>
+      </field>
+      <field>
+        <name>time_id</name>
+      </field>
+    </group>
+    <key_field>indicator_code</key_field>
+    <attributes/>
+    <GUI>
+      <xloc>736</xloc>
+      <yloc>80</yloc>
+    </GUI>
+  </transform>
+  <transform>
+    <name>Select values</name>
+    <type>SelectValues</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <fields>
+      <remove>
+        <name>iso3</name>
+      </remove>
+      <remove>
+        <name>country_name</name>
+      </remove>
+      <remove>
+        <name>indicator_name</name>
+      </remove>
+      <remove>
+        <name>year</name>
+      </remove>
+      <select_unspecified>N</select_unspecified>
+    </fields>
+    <attributes/>
+    <GUI>
+      <xloc>880</xloc>
+      <yloc>80</yloc>
+    </GUI>
+  </transform>
+  <transform>
+    <name>Sort rows</name>
+    <type>SortRows</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <compress>N</compress>
+    <directory>${java.io.tmpdir}</directory>
+    <fields>
+      <field>
+        <ascending>Y</ascending>
+        <case_sensitive>N</case_sensitive>
+        <collator_enabled>N</collator_enabled>
+        <collator_strength>0</collator_strength>
+        <name>country_id</name>
+        <presorted>N</presorted>
+      </field>
+      <field>
+        <ascending>Y</ascending>
+        <case_sensitive>N</case_sensitive>
+        <collator_enabled>N</collator_enabled>
+        <collator_strength>0</collator_strength>
+        <name>time_id</name>
+        <presorted>N</presorted>
+      </field>
+    </fields>
+    <sort_prefix>out</sort_prefix>
+    <sort_size>1000000</sort_size>
+    <unique_rows>N</unique_rows>
+    <attributes/>
+    <GUI>
+      <xloc>608</xloc>
+      <yloc>80</yloc>
+    </GUI>
+  </transform>
+  <transform>
+    <name>Table input</name>
+    <type>TableInput</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <connection>group_29</connection>
+    <execute_each_row>N</execute_each_row>
+    <limit>0</limit>
+    <sql>SELECT * FROM
+(SELECT * FROM stagingDB.MADDISON_INDICATORS
+WHERE indicator_code = 'gdp' OR 
+      indicator_code = 'gdppc'
+UNION
+SELECT * FROM stagingDB.WDI_INDICATORS
+WHERE indicator_code = 'NY.GDP.MKTP.KD.ZG' OR
+	  indicator_code = 'NE.EXP.GNFS.ZS' OR
+      indicator_code = 'NE.IMP.GNFS.ZS') AS tmp
+ORDER BY country_name, indicator_code;</sql>
+    <variables_active>N</variables_active>
+    <attributes/>
+    <GUI>
+      <xloc>64</xloc>
       <yloc>80</yloc>
     </GUI>
   </transform>

@@ -37,7 +37,7 @@
       <method>none</method>
       <schema_name/>
     </partitioning>
-    <connection>Staging</connection>
+    <connection>group_29</connection>
     <execute_each_row>N</execute_each_row>
     <limit>0</limit>
     <sql>SELECT
@@ -66,7 +66,7 @@ FROM stagingDB.COUNTRY_MAPPING
     </partitioning>
     <cache_size>9999</cache_size>
     <commit>100</commit>
-    <connection>Staging</connection>
+    <connection>group_29</connection>
     <crc>N</crc>
     <crcfield>hashcode</crcfield>
     <fields>
@@ -84,6 +84,7 @@ FROM stagingDB.COUNTRY_MAPPING
       </key>
       <return>
         <creation_method>tablemax</creation_method>
+        <last_update_field/>
         <name>country_id</name>
         <use_autoinc>N</use_autoinc>
       </return>
