@@ -184,3 +184,11 @@ WHERE year NOT IN (
   SELECT DISTINCT year
   FROM MADDISON_INDICATORS
 );
+
+-- number of observations per year per indicator below the number of countries (to identify indicators with limited coverage)
+SELECT year, indicator_code, COUNT(*) AS n_countries
+FROM MADDISON_INDICATORS
+WHERE value IS NOT NULL
+GROUP BY year, indicator_code
+HAVING COUNT(*) < 15
+ORDER BY year;
